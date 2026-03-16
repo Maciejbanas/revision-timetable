@@ -1,1 +1,1860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maciek's A-Level Revision Timetable 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: #2a2a3a;
+    --text: #e8e8f0;
+    --muted: #6a6a8a;
+    --bio: #00d4a0;
+    --bio-dim: #00d4a018;
+    --maths: #4dabff;
+    --maths-dim: #4dabff18;
+    --cs: #ff6b9d;
+    --cs-dim: #ff6b9d18;
+    --exam: #ffb347;
+    --exam-dim: #ffb34720;
+    --lunch: #a78bfa;
+    --lunch-dim: #a78bfa18;
+    --free: #f59e0b;
+    --free-dim: #f59e0b15;
+    --school: #ffffff08;
+    --accent: #7c5cff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
+  /* HEADER */
+  header {
+    padding: 48px 40px 32px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, #7c5cff22 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .header-title h1 {
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+  .header-title h1 span { color: var(--accent); }
+  .header-title p {
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    margin-top: 8px;
+    letter-spacing: 1px;
+  }
+  .legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+  .countdown-bar {
+    margin-top: 28px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .countdown-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-family: 'Space Mono', monospace;
+  }
+  .countdown-card .num { font-size: 28px; font-weight: 700; line-height: 1; }
+  .countdown-card .label { font-size: 10px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 4px; }
+  .countdown-card.bio { border-color: var(--bio); }
+  .countdown-card.bio .num { color: var(--bio); }
+  .countdown-card.maths { border-color: var(--maths); }
+  .countdown-card.maths .num { color: var(--maths); }
+  .countdown-card.cs { border-color: var(--cs); }
+  .countdown-card.cs .num { color: var(--cs); }
+
+  /* PHASE NAV */
+  .phase-nav {
+    display: flex;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    scrollbar-width: none;
+  }
+  .phase-nav::-webkit-scrollbar { display: none; }
+  .phase-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 16px 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .phase-btn:hover { color: var(--text); }
+  .phase-btn.active { color: var(--text); border-bottom-color: var(--accent); }
+
+  /* MAIN */
+  main { padding: 32px 40px; }
+  .phase-section { display: none; }
+  .phase-section.active { display: block; }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .phase-tag {
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  .phase-tag.holiday { background: #2a3a2a; color: var(--bio); border: 1px solid var(--bio); }
+  .phase-tag.exam-tag { background: #3a2a1a; color: var(--exam); border: 1px solid var(--exam); }
+  .phase-title { font-size: 22px; font-weight: 800; }
+  .phase-subtitle { color: var(--muted); font-size: 13px; font-family: 'Space Mono', monospace; margin-left: auto; }
+  .phase-note {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+  .phase-note strong { color: var(--text); }
+
+  /* WEEK GRID */
+  .week { margin-bottom: 40px; }
+  .week-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .days-grid { display: grid; gap: 6px; }
+  .days-grid.five { grid-template-columns: repeat(5, 1fr); }
+  .days-grid.two { grid-template-columns: repeat(2, 1fr); }
+  .days-grid.four { grid-template-columns: repeat(4, 1fr); }
+  .days-grid.three { grid-template-columns: repeat(3, 1fr); }
+  .days-grid.seven { grid-template-columns: repeat(7, 1fr); }
+
+  /* DAY CARD */
+  .day-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .day-card.weekend { background: var(--bg); border-style: dashed; }
+  .day-card.exam-day { border-color: var(--exam); background: #1a140a; }
+  .day-header {
+    padding: 10px 12px 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .day-name { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .day-date { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); }
+  .day-body { padding: 8px; flex: 1; display: flex; flex-direction: column; gap: 5px; }
+
+  /* BLOCKS */
+  .block {
+    border-radius: 6px;
+    padding: 6px 9px;
+    font-size: 11px;
+    line-height: 1.35;
+    font-weight: 600;
+    position: relative;
+  }
+  .block .time {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    font-weight: 400;
+    opacity: 0.75;
+    margin-bottom: 2px;
+    display: block;
+  }
+  .block.school { background: var(--school); border: 1px solid var(--border); color: var(--muted); font-weight: 400; }
+  .block.bio { background: var(--bio-dim); border: 1px solid var(--bio); color: var(--bio); }
+  .block.maths { background: var(--maths-dim); border: 1px solid var(--maths); color: var(--maths); }
+  .block.cs { background: var(--cs-dim); border: 1px solid var(--cs); color: var(--cs); }
+  .block.exam-block { background: var(--exam-dim); border: 1px solid var(--exam); color: var(--exam); font-weight: 700; }
+  .block.break { background: #1a1a2a; border: 1px solid #2a2a3a; color: var(--muted); font-weight: 400; font-size: 10px; }
+  .block.study-hall { background: #1a1a2e; border: 1px dashed var(--accent); color: var(--accent); }
+  .block.lunch-rev { background: var(--lunch-dim); border: 1px solid var(--lunch); color: var(--lunch); }
+  .block.free-period { background: var(--free-dim); border: 1px solid var(--free); color: var(--free); }
+
+  /* TICKABLE BLOCKS */
+  .block.tickable {
+    cursor: pointer;
+    user-select: none;
+    padding-right: 32px;
+    transition: opacity 0.2s;
+  }
+  .block.tickable::after {
+    content: '○';
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    opacity: 0.5;
+    font-weight: 400;
+  }
+  .block.tickable:hover { filter: brightness(1.15); }
+  .block.tickable.done {
+    opacity: 0.45;
+    text-decoration: line-through;
+    text-decoration-color: currentColor;
+    text-decoration-thickness: 1.5px;
+  }
+  .block.tickable.done::after { content: '✓'; opacity: 1; }
+
+  /* TOPIC PILLS */
+  .topic-pill {
+    display: inline-block;
+    font-size: 9px;
+    font-family: 'Space Mono', monospace;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-top: 3px;
+    opacity: 0.9;
+  }
+  .tp-bio { background: #00d4a030; color: var(--bio); }
+  .tp-maths { background: #4dabff25; color: var(--maths); }
+  .tp-cs { background: #ff6b9d25; color: var(--cs); }
+  .tp-lunch { background: #a78bfa25; color: var(--lunch); }
+  .tp-free { background: #f59e0b20; color: var(--free); }
+
+  /* EXAM SCHEDULE */
+  .exam-schedule {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .exam-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .exam-card-title { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); font-family: 'Space Mono', monospace; margin-bottom: 12px; }
+  .exam-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .exam-row:last-child { border-bottom: none; }
+  .exam-row .paper { font-weight: 600; }
+  .exam-row .edate { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); }
+
+  /* STRATEGY CARDS */
+  .strategy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .strategy-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .strategy-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .strategy-card ul { list-style: none; font-size: 12px; color: var(--muted); line-height: 1.9; }
+  .strategy-card ul li::before { content: '→ '; color: var(--accent); font-weight: 700; }
+
+  /* PROGRESS BAR */
+  .progress-bar-wrap { margin-bottom: 20px; }
+  .progress-bar-label { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; margin-bottom: 6px; display: flex; justify-content: space-between; }
+  .progress-bar { background: var(--border); border-radius: 4px; height: 6px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; border-radius: 4px; background: var(--accent); transition: width 0.4s ease; }
+
+  /* STATS PANEL */
+  .stats-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+  }
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 0;
+  }
+  .stat-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .stat-card.total { border-color: var(--accent); }
+  .stat-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .stat-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    opacity: 0.7;
+  }
+  .subject-bars { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+  .subj-bar-row { display: flex; align-items: center; gap: 10px; }
+  .subj-bar-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1px; width: 28px; text-align: right; }
+  .subj-bar-pct { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); width: 30px; text-align: right; }
+
+  @media (max-width: 900px) {
+    header, .phase-nav, main { padding-left: 16px; padding-right: 16px; }
+    .days-grid.five, .days-grid.seven { grid-template-columns: 1fr; }
+    .days-grid.four, .days-grid.three, .days-grid.two { grid-template-columns: 1fr 1fr; }
+    .day-card { min-height: auto; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="header-title">
+      <h1>Maciek's <span>A-Level</span><br>Revision Plan 2026</h1>
+      <p>BIOLOGY (AQA) · MATHS (EDEXCEL) · COMPUTER SCIENCE (OCR) · TARGET: A*AA</p>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--bio)"></div>Biology</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--maths)"></div>Maths</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--cs)"></div>CS</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--free)"></div>Free period</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--lunch)"></div>Lunch rev</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--exam)"></div>Exam</div>
+    </div>
+  </div>
+  <div class="countdown-bar">
+    <div class="countdown-card maths"><div class="num" id="cd-maths">—</div><div class="label">Days to Maths P1</div></div>
+    <div class="countdown-card bio"><div class="num" id="cd-bio">—</div><div class="label">Days to Bio P1</div></div>
+    <div class="countdown-card cs"><div class="num" id="cd-cs">—</div><div class="label">Days to CS P1</div></div>
+  </div>
+</header>
+
+<nav class="phase-nav">
+  <button class="phase-btn active" onclick="showPhase('overview',this)">📋 Overview</button>
+  <button class="phase-btn" onclick="showPhase('phase1',this)">Phase 1 · School (Mar–Easter)</button>
+  <button class="phase-btn" onclick="showPhase('phase2',this)">Phase 2 · Easter Hols</button>
+  <button class="phase-btn" onclick="showPhase('phase3',this)">Phase 3 · Final School Weeks</button>
+  <button class="phase-btn" onclick="showPhase('phase4',this)">Phase 4 · Study Leave</button>
+  <button class="phase-btn" onclick="showPhase('phase5',this)">Phase 5 · Exam Period</button>
+</nav>
+
+<main>
+
+<!-- OVERVIEW -->
+<div class="phase-section active" id="phase-overview">
+  <div class="phase-header">
+    <div class="phase-tag">MASTER PLAN</div>
+    <div class="phase-title">Full Exam Schedule & Strategy</div>
+  </div>
+
+  <!-- TIME STATS PANEL -->
+  <div class="stats-panel">
+    <div class="stats-row">
+      <div class="stat-card total">
+        <div class="stat-num" id="stat-total-done">0h 0m</div>
+        <div class="stat-label">REVISION DONE</div>
+        <div class="stat-sub" id="stat-total-left">of 0h total planned</div>
+      </div>
+      <div class="stat-card" style="border-color:var(--bio)">
+        <div class="stat-num" style="color:var(--bio)" id="stat-bio-done">0h 0m</div>
+        <div class="stat-label">🧬 BIOLOGY</div>
+        <div class="stat-sub" id="stat-bio-left">of 0h planned</div>
+      </div>
+      <div class="stat-card" style="border-color:var(--maths)">
+        <div class="stat-num" style="color:var(--maths)" id="stat-maths-done">0h 0m</div>
+        <div class="stat-label">📐 MATHS</div>
+        <div class="stat-sub" id="stat-maths-left">of 0h planned</div>
+      </div>
+      <div class="stat-card" style="border-color:var(--cs)">
+        <div class="stat-num" style="color:var(--cs)" id="stat-cs-done">0h 0m</div>
+        <div class="stat-label">💻 COMP SCI</div>
+        <div class="stat-sub" id="stat-cs-left">of 0h planned</div>
+      </div>
+    </div>
+    <div class="progress-bar-wrap" style="margin-top:16px;margin-bottom:0">
+      <div class="progress-bar-label"><span>OVERALL PROGRESS</span><span id="prog-label">0 / 0 sessions ticked</span></div>
+      <div class="progress-bar"><div class="progress-bar-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+    <div class="subject-bars">
+      <div class="subj-bar-row">
+        <span class="subj-bar-label" style="color:var(--bio)">BIO</span>
+        <div class="progress-bar" style="flex:1"><div class="progress-bar-fill" id="prog-bio" style="width:0%;background:var(--bio)"></div></div>
+        <span class="subj-bar-pct" id="pct-bio">0%</span>
+      </div>
+      <div class="subj-bar-row">
+        <span class="subj-bar-label" style="color:var(--maths)">MTH</span>
+        <div class="progress-bar" style="flex:1"><div class="progress-bar-fill" id="prog-maths" style="width:0%;background:var(--maths)"></div></div>
+        <span class="subj-bar-pct" id="pct-maths">0%</span>
+      </div>
+      <div class="subj-bar-row">
+        <span class="subj-bar-label" style="color:var(--cs)">CS</span>
+        <div class="progress-bar" style="flex:1"><div class="progress-bar-fill" id="prog-cs" style="width:0%;background:var(--cs)"></div></div>
+        <span class="subj-bar-pct" id="pct-cs">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-schedule">
+    <div class="exam-card">
+      <div class="exam-card-title" style="color:var(--bio)">🧬 AQA Biology (7402)</div>
+      <div class="exam-row"><span class="paper">Paper 1 – Biological Processes</span><span class="edate">Thu 4 Jun · PM · 2h</span></div>
+      <div class="exam-row"><span class="paper">Paper 2 – Biological Diversity</span><span class="edate">Fri 12 Jun · AM · 2h</span></div>
+      <div class="exam-row"><span class="paper">Paper 3 – Mixed + Practical Skills</span><span class="edate">Tue 16 Jun · AM · 2h</span></div>
+    </div>
+    <div class="exam-card">
+      <div class="exam-card-title" style="color:var(--maths)">📐 Edexcel Maths (9MA0)</div>
+      <div class="exam-row"><span class="paper">Paper 1 – Pure Maths 1</span><span class="edate">Wed 3 Jun · PM · 2h</span></div>
+      <div class="exam-row"><span class="paper">Paper 2 – Pure Maths 2</span><span class="edate">Thu 11 Jun · PM · 2h</span></div>
+      <div class="exam-row"><span class="paper">Paper 3 – Stats & Mechanics</span><span class="edate">Thu 18 Jun · PM · 2h</span></div>
+    </div>
+    <div class="exam-card">
+      <div class="exam-card-title" style="color:var(--cs)">💻 OCR Computer Science (H446)</div>
+      <div class="exam-row"><span class="paper">Paper 1 – Computer Systems</span><span class="edate">Wed 10 Jun · PM · 2h 30m</span></div>
+      <div class="exam-row"><span class="paper">Paper 2 – Algorithms & Programming</span><span class="edate">Wed 17 Jun · AM · 2h 30m</span></div>
+    </div>
+  </div>
+
+  <div class="phase-note">
+    <strong>Your exam window: 3 June – 18 June.</strong> You have school lessons until ~22 May, then study leave. Biology is your biggest priority (C→A) — roughly <strong>Bio 40% / Maths 35% / CS 25%</strong> of study time. Free periods and lunch (13:00–14:05) at school are now fully mapped — that's an extra 1–2 hrs of revision on most school days without touching your evening. Click any revision block to tick it off ✓
+  </div>
+
+  <div class="strategy-grid">
+    <div class="strategy-card">
+      <h3 style="color:var(--bio)">🧬 Biology Strategy (C → A)</h3>
+      <ul>
+        <li>Topics 1–4 during school weeks (Mar–Easter), Topics 5–8 over Easter</li>
+        <li>After each topic: Anki flashcards for every definition + process</li>
+        <li>Topic-by-topic Qs on Save My Exams — not full papers yet</li>
+        <li>Paper 1: Biological molecules, Cells, Exchange, Genetic info</li>
+        <li>Paper 2: Energy transfers, Responding, Genetics, Ecosystems</li>
+        <li>Paper 3: Any topic + all 12 required practicals — drill weekly</li>
+        <li>Full past papers from mid-April onwards</li>
+      </ul>
+    </div>
+    <div class="strategy-card">
+      <h3 style="color:var(--maths)">📐 Maths Strategy (B → A*)</h3>
+      <ul>
+        <li>Topic questions ONLY — no past papers until all topics covered</li>
+        <li>Save My Exams topic banks — do every question in each topic</li>
+        <li>Weakest topics first, ask teacher which to prioritise</li>
+        <li>Pure 1 + 2 first, then Stats, then Mechanics</li>
+        <li>Once teacher approves → timed past papers to build exam technique</li>
+        <li>A* differentiation: proof, hardest integration, parametric</li>
+      </ul>
+    </div>
+    <div class="strategy-card">
+      <h3 style="color:var(--cs)">💻 CS Strategy (B → A)</h3>
+      <ul>
+        <li>Paper 1: CPU arch, OS, networking, databases, security, ethics, legal</li>
+        <li>Paper 2: Data structures, sorting/searching, OOP, languages, theory</li>
+        <li>Write pseudocode + algorithms by hand in every session — essential</li>
+        <li>Trace through code execution on paper (exam requires this)</li>
+        <li>Past paper Qs from mid-April for Paper 1 + 2 individually</li>
+        <li>Note exact mark-scheme wording — CS marking is very specific</li>
+      </ul>
+    </div>
+    <div class="strategy-card">
+      <h3>⏰ School Day Template</h3>
+      <ul>
+        <li>06:30 Wake · 07:00 Leave · 08:00 Arrive</li>
+        <li>Free periods → revision (shown in amber on timetable)</li>
+        <li>13:00–14:05 Lunch → light revision (shown in purple)</li>
+        <li>Study Hall (14:15–15:05 Mon/Tue/Thu) → focused work</li>
+        <li>Leave school early on free-period-heavy afternoons</li>
+        <li>17:00–18:30 Block 1 · 19:00–20:30 Block 2 at home</li>
+        <li>21:00–22:00 Walking Dead 🧟 · 23:00 Sleep</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 1: Mar 16 – Easter -->
+<div class="phase-section" id="phase-phase1">
+  <div class="phase-header">
+    <div class="phase-tag">PHASE 1</div>
+    <div class="phase-title">School Weeks</div>
+    <div class="phase-subtitle">16 Mar – Easter (28 Mar)</div>
+  </div>
+  <div class="phase-note">
+    <strong>Goal: build the habit and cover Bio Topics 1–4 + start Maths + CS Paper 1 notes.</strong> Your free periods this phase are gold — I've mapped every gap. Free periods (amber) = focused work on one subject. Lunch (purple) = lighter review or Anki. On days you finish before period 4/5, head home and start your evening block earlier. <strong>Week A: 16–20 Mar. Week B: 23–27 Mar.</strong>
+  </div>
+
+  <!-- WEEK 16-20 MAR (WEEK A) -->
+  <div class="week">
+    <div class="week-label">Week A · 16–20 March</div>
+    <div class="days-grid five">
+
+      <!-- MON 16 -->
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Mon</span><span class="day-date">16 Mar</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">08:40</span>Registration</div>
+          <div class="block free-period tickable"><span class="time">09:10–10:55 FREE</span>Bio Topic 1: Biological Molecules — notes<span class="topic-pill tp-bio">carbs, lipids, proteins</span></div>
+          <div class="block school"><span class="time">10:00–10:55</span>Biology lesson</div>
+          <div class="block school"><span class="time">11:15–12:05</span>Maths lesson</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Anki — Bio Topic 1 cards<span class="topic-pill tp-lunch">10–15 mins while eating</span></div>
+          <div class="block study-hall tickable"><span class="time">14:15–15:05 STUDY HALL</span>Maths: identify weakest topics, make topic list</div>
+          <div class="block school"><span class="time">15:05–16:00</span>Form Prog</div>
+          <div class="block bio tickable"><span class="time">17:00–18:30 HOME</span>Bio Topic 1 continued: DNA structure, enzymes<span class="topic-pill tp-bio">enzyme kinetics esp.</span></div>
+          <div class="block maths tickable"><span class="time">19:00–20:30 HOME</span>Maths: Proof &amp; Algebra — topic Qs<span class="topic-pill tp-maths">Save My Exams</span></div>
+        </div>
+      </div>
+
+      <!-- TUE 17 -->
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Tue</span><span class="day-date">17 Mar</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">08:40</span>Registration</div>
+          <div class="block free-period tickable"><span class="time">09:10–11:05 FREE</span>Bio Topic 1: Biological Molecules — all subtopics<span class="topic-pill tp-bio">monomers/polymers, water</span></div>
+          <div class="block school"><span class="time">11:15–12:05</span>Biology lesson</div>
+          <div class="block school"><span class="time">12:05–13:00</span>Biology lesson</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Anki — add new Bio Topic 1 cards<span class="topic-pill tp-lunch">make cards while fresh</span></div>
+          <div class="block school"><span class="time">14:15–15:05</span>Maths lesson</div>
+          <div class="block school"><span class="time">15:05–16:00</span>Computer Science</div>
+          <div class="block cs tickable"><span class="time">17:00–18:30 HOME</span>CS Paper 1: CPU Architecture<span class="topic-pill tp-cs">registers, fetch-execute, interrupts</span></div>
+          <div class="block bio tickable"><span class="time">19:00–20:30 HOME</span>Bio Topic 1: Save My Exams topic Qs<span class="topic-pill tp-bio">mark + review errors</span></div>
+        </div>
+      </div>
+
+      <!-- WED 18 -->
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Wed</span><span class="day-date">18 Mar</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">08:40</span>Registration</div>
+          <div class="block school"><span class="time">09:10–10:00</span>Biology lesson</div>
+          <div class="block free-period tickable"><span class="time">10:00–11:10 FREE</span>Maths: Coordinate geometry + circles<span class="topic-pill tp-maths">topic Qs</span></div>
+          <div class="block school"><span class="time">11:15–12:05</span>Maths lesson</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>CS: Quick read — memory hierarchy notes<span class="topic-pill tp-lunch">RAM, ROM, cache</span></div>
+          <div class="block school"><span class="time">14:15–15:05</span>QED/EDGE</div>
+          <div class="block school"><span class="time">15:05–16:00</span>QED/EDGE</div>
+          <div class="block bio tickable"><span class="time">17:00–18:30 HOME</span>Bio Topic 2: Cell Structure<span class="topic-pill tp-bio">organelles, eukaryote vs prokaryote</span></div>
+          <div class="block maths tickable"><span class="time">19:00–20:30 HOME</span>Maths: Binomial expansion<span class="topic-pill tp-maths">Save My Exams Qs</span></div>
+        </div>
+      </div>
+
+      <!-- THU 19 -->
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Thu</span><span class="day-date">19 Mar</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">08:40</span>Registration</div>
+          <div class="block school"><span class="time">09:10–10:55</span>Maths x2</div>
+          <div class="block school"><span class="time">11:15–12:05</span>Computer Science</div>
+          <div class="block school"><span class="time">12:05–13:00</span>Computer Science</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Bio: Anki — all Topic 1 cards review<span class="topic-pill tp-lunch">spaced rep</span></div>
+          <div class="block study-hall tickable"><span class="time">14:15–15:05 STUDY HALL</span>Bio Topic 2: Cell division — diagrams from memory<span class="topic-pill tp-bio">mitosis vs meiosis</span></div>
+          <div class="block school"><span class="time">15:05–16:00</span>Biology lesson</div>
+          <div class="block cs tickable"><span class="time">17:00–18:30 HOME</span>CS: Operating Systems<span class="topic-pill tp-cs">scheduling, memory management, virtual mem</span></div>
+          <div class="block bio tickable"><span class="time">19:00–20:30 HOME</span>Bio Topic 2: Microscopy + cell fractionation<span class="topic-pill tp-bio">magnification calcs practice</span></div>
+        </div>
+      </div>
+
+      <!-- FRI 20 -->
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Fri</span><span class="day-date">20 Mar</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">08:40</span>Registration</div>
+          <div class="block school"><span class="time">09:10–10:55</span>Computer Science x2</div>
+          <div class="block school"><span class="time">11:15–12:05</span>Computer Science</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Maths: Skim notes — sequences &amp; series<span class="topic-pill tp-lunch">light review</span></div>
+          <div class="block school"><span class="time">14:15–15:05</span>Biology lesson</div>
+          <div class="block school"><span class="time">15:05–16:00</span>Maths lesson</div>
+          <div class="block bio tickable"><span class="time">17:00–18:30 HOME</span>Bio Topic 2: Topic Qs (Save My Exams)<span class="topic-pill tp-bio">mark + review</span></div>
+          <div class="block maths tickable"><span class="time">19:00–20:00 HOME</span>Maths: Sequences &amp; Series topic Qs<span class="topic-pill tp-maths">Save My Exams</span></div>
+          <div class="block break"><span class="time">20:00+</span>Weekend 🎉 Walking Dead 🧟</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEKEND 21-22 MAR -->
+  <div class="week">
+    <div class="week-label">Weekend · 21–22 March</div>
+    <div class="days-grid two">
+      <div class="day-card weekend">
+        <div class="day-header"><span class="day-name">Sat</span><span class="day-date">21 Mar</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">10:00–12:00</span>Bio Topic 3: Organisms Exchange Substances<span class="topic-pill tp-bio">gas exchange, digestion, kidneys</span></div>
+          <div class="block break"><span class="time">12:00–13:30</span>Lunch + break</div>
+          <div class="block maths tickable"><span class="time">13:30–15:30</span>Maths: Trigonometry — identities + equations<span class="topic-pill tp-maths">Save My Exams Qs</span></div>
+          <div class="block break"><span class="time">15:30–17:00</span>Chill</div>
+          <div class="block cs tickable"><span class="time">17:00–18:30</span>CS: Networking — protocols, OSI model<span class="topic-pill tp-cs">TCP/IP, HTTP, DNS</span></div>
+        </div>
+      </div>
+      <div class="day-card weekend">
+        <div class="day-header"><span class="day-name">Sun</span><span class="day-date">22 Mar</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">10:00–11:30</span>Bio Anki review — Topics 1 + 2 full deck<span class="topic-pill tp-bio">clear weak cards</span></div>
+          <div class="block maths tickable"><span class="time">11:30–13:00</span>Maths: Radians + trig topic Qs<span class="topic-pill tp-maths">Save My Exams</span></div>
+          <div class="block bio tickable"><span class="time">14:00–15:30</span>Bio Topic 3 continued: Transport in plants<span class="topic-pill tp-bio">xylem, phloem, cohesion tension</span></div>
+          <div class="block break"><span class="time">15:30+</span>Rest — no revision after 15:30 Sunday</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 23-27 MAR (WEEK B) -->
+  <div class="week">
+    <div class="week-label">Week B · 23–27 March</div>
+    <div class="days-grid five">
+
+      <!-- MON 23 -->
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Mon</span><span class="day-date">23 Mar</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">08:40</span>Registration</div>
+          <div class="block school"><span class="time">09:10–10:55</span>Computer Science x2</div>
+          <div class="block free-period tickable"><span class="time">10:55–12:05 FREE</span>Bio Topic 3: Transport in animals<span class="topic-pill tp-bio">heart, cardiac cycle, blood vessels</span></div>
+          <div class="block school"><span class="time">12:05–13:00</span>Biology lesson</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>CS: Networking Anki cards<span class="topic-pill tp-lunch">protocols flashcards</span></div>
+          <div class="block study-hall tickable"><span class="time">14:15–15:05 STUDY HALL</span>Maths: Exponentials &amp; logs — topic Qs<span class="topic-pill tp-maths">Save My Exams</span></div>
+          <div class="block bio tickable"><span class="time">17:00–18:30 HOME</span>Bio Topic 3: Topic Qs (Save My Exams)<span class="topic-pill tp-bio">gas exchange focus</span></div>
+          <div class="block cs tickable"><span class="time">19:00–20:30 HOME</span>CS: Databases — SQL, normalisation, ER diagrams<span class="topic-pill tp-cs">1NF, 2NF, 3NF</span></div>
+        </div>
+      </div>
+
+      <!-- TUE 24 -->
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Tue</span><span class="day-date">24 Mar</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">08:40</span>Registration</div>
+          <div class="block school"><span class="time">09:10–10:55</span>Maths x2</div>
+          <div class="block school"><span class="time">11:15–13:00</span>Computer Science x2</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Bio: Anki review — Topic 3 new cards<span class="topic-pill tp-lunch">add cards made earlier</span></div>
+          <div class="block study-hall tickable"><span class="time">14:15–15:05 STUDY HALL</span>CS: Security — threats, encryption types<span class="topic-pill tp-cs">symmetric, asymmetric, hashing</span></div>
+          <div class="block school"><span class="time">15:05–16:00</span>Biology lesson</div>
+          <div class="block bio tickable"><span class="time">17:00–18:30 HOME</span>Bio Topic 4: Genetic Information<span class="topic-pill tp-bio">DNA structure, replication, RNA types</span></div>
+          <div class="block maths tickable"><span class="time">19:00–20:30 HOME</span>Maths: Calculus — differentiation rules<span class="topic-pill tp-maths">chain, product, quotient rules</span></div>
+        </div>
+      </div>
+
+      <!-- WED 25 -->
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Wed</span><span class="day-date">25 Mar</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">08:40</span>Registration</div>
+          <div class="block free-period tickable"><span class="time">09:10–10:00 FREE</span>Maths: Differentiation — stationary points, optimisation<span class="topic-pill tp-maths">Save My Exams Qs</span></div>
+          <div class="block school"><span class="time">10:00–10:55</span>Computer Science</div>
+          <div class="block free-period tickable"><span class="time">10:55–11:15 FREE</span>CS: Ethical issues — quick notes skim</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Bio: Topic 4 Anki — protein synthesis terms<span class="topic-pill tp-lunch">transcription vs translation</span></div>
+          <div class="block school"><span class="time">14:15–16:00</span>QED/EDGE x2</div>
+          <div class="block bio tickable"><span class="time">17:00–18:30 HOME</span>Bio Topic 4: Protein synthesis + mutations<span class="topic-pill tp-bio">transcription, translation, codons</span></div>
+          <div class="block maths tickable"><span class="time">19:00–20:30 HOME</span>Maths: Integration — basics + definite integrals<span class="topic-pill tp-maths">area under curve</span></div>
+        </div>
+      </div>
+
+      <!-- THU 26 -->
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Thu</span><span class="day-date">26 Mar</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">08:40</span>Registration</div>
+          <div class="block free-period tickable"><span class="time">09:10–11:15 FREE</span>Bio Topic 4: DNA technology — PCR, gel electrophoresis<span class="topic-pill tp-bio">genetic fingerprinting</span></div>
+          <div class="block school"><span class="time">11:15–13:00</span>Biology x2</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Maths: Skim differentiation errors — redo any wrong Qs<span class="topic-pill tp-lunch">targeted</span></div>
+          <div class="block study-hall tickable"><span class="time">14:15–15:05 STUDY HALL</span>Bio Topic 4: Topic Qs (Save My Exams)<span class="topic-pill tp-bio">mark + error review</span></div>
+          <div class="block school"><span class="time">15:05–16:00</span>Computer Science</div>
+          <div class="block cs tickable"><span class="time">17:00–18:30 HOME</span>CS: Data representation — binary, hex, two's complement<span class="topic-pill tp-cs">number conversions practice</span></div>
+          <div class="block bio tickable"><span class="time">19:00–20:30 HOME</span>Bio: Full Anki sweep — Topics 1–4<span class="topic-pill tp-bio">spaced repetition run</span></div>
+        </div>
+      </div>
+
+      <!-- FRI 27 -->
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Fri</span><span class="day-date">27 Mar</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">08:40</span>Registration</div>
+          <div class="block school"><span class="time">09:10–10:55</span>Biology x2</div>
+          <div class="block school"><span class="time">11:15–13:00</span>Maths x2</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>CS: Quick review — compression + data transmission<span class="topic-pill tp-lunch">lossy vs lossless</span></div>
+          <div class="block school"><span class="time">14:15–15:05</span>Computer Science</div>
+          <div class="block bio tickable"><span class="time">16:30–18:00 HOME (early)</span>Bio Topics 1–4: Save My Exams topic Qs sweep<span class="topic-pill tp-bio">identify remaining gaps</span></div>
+          <div class="block maths tickable"><span class="time">18:30–20:00 HOME</span>Maths: Integration — substitution method<span class="topic-pill tp-maths">Save My Exams Qs</span></div>
+          <div class="block break"><span class="time">20:00+</span>Last school day before Easter! 🎉</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- WEEKEND 28-29 MAR -->
+  <div class="week">
+    <div class="week-label">Weekend · 28–29 March (Last before Easter)</div>
+    <div class="days-grid two">
+      <div class="day-card weekend">
+        <div class="day-header"><span class="day-name">Sat</span><span class="day-date">28 Mar</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">10:00–12:00</span>Bio: Full Anki Topics 1–4 + clear weak cards<span class="topic-pill tp-bio">spaced rep</span></div>
+          <div class="block break"><span class="time">12:00–14:00</span>Lunch / meet mate if you want</div>
+          <div class="block maths tickable"><span class="time">14:00–16:00</span>Maths: Integration continued — by parts, parametric<span class="topic-pill tp-maths">Save My Exams</span></div>
+          <div class="block break"><span class="time">16:00+</span>Evening off</div>
+        </div>
+      </div>
+      <div class="day-card weekend">
+        <div class="day-header"><span class="day-name">Sun</span><span class="day-date">29 Mar</span></div>
+        <div class="day-body">
+          <div class="block cs tickable"><span class="time">10:00–11:30</span>CS: Boolean algebra + logic gates<span class="topic-pill tp-cs">simplify expressions, truth tables</span></div>
+          <div class="block maths tickable"><span class="time">11:30–13:00</span>Maths: Vectors — 2D + 3D<span class="topic-pill tp-maths">Save My Exams Qs</span></div>
+          <div class="block break"><span class="time">13:00+</span>Rest — Easter hols start tomorrow 🐣</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 2: EASTER -->
+<div class="phase-section" id="phase-phase2">
+  <div class="phase-header">
+    <div class="phase-tag holiday">PHASE 2</div>
+    <div class="phase-title">Easter Holidays — The Big Push</div>
+    <div class="phase-subtitle">30 Mar – 12 Apr (2 weeks)</div>
+  </div>
+  <div class="phase-note">
+    <strong>No school = no commute = maximum revision time.</strong> This is your most important block. Aim to finish Bio Topics 5–8, cover all remaining CS topics, and get through remaining Maths topics. Wake 8:00 on weekdays (a modest lie-in while still being productive). 3 blocks × 90 mins = 4.5 hrs focused work per day. Have one weekend day off to meet your mate. Keep Anki going every morning before you start.
+  </div>
+
+  <div class="week">
+    <div class="week-label">Easter Week 1 · 30 Mar – 5 Apr</div>
+    <div class="days-grid seven">
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Mon</span><span class="day-date">30 Mar</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">09:00–10:30</span>Bio Topic 5: Photosynthesis<span class="topic-pill tp-bio">LDR, LIR, Calvin cycle</span></div>
+          <div class="block maths tickable"><span class="time">11:00–12:30</span>Maths: Numerical methods<span class="topic-pill tp-maths">Newton-Raphson, iteration</span></div>
+          <div class="block bio tickable"><span class="time">14:00–15:30</span>Bio Topic 5: Respiration<span class="topic-pill tp-bio">glycolysis, Krebs, ETC, ATP yield</span></div>
+          <div class="block cs tickable"><span class="time">17:00–18:30</span>CS: Ethical + legal issues — legislation<span class="topic-pill tp-cs">Computer Misuse Act, GDPR, etc.</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Tue</span><span class="day-date">31 Mar</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">09:00–10:30</span>Bio Topic 5: Topic Qs — photosynthesis + respiration<span class="topic-pill tp-bio">Save My Exams</span></div>
+          <div class="block cs tickable"><span class="time">11:00–12:30</span>CS Paper 2: Data structures — arrays, linked lists, stacks, queues<span class="topic-pill tp-cs">write code on paper</span></div>
+          <div class="block maths tickable"><span class="time">14:00–15:30</span>Maths: Differential equations — separating variables<span class="topic-pill tp-maths">Save My Exams Qs</span></div>
+          <div class="block cs tickable"><span class="time">17:00–18:30</span>CS: Trees + graphs + traversal algorithms<span class="topic-pill tp-cs">BFS, DFS, Dijkstra's</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Wed</span><span class="day-date">1 Apr</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">09:00–10:30</span>Bio Topic 6: Nervous system<span class="topic-pill tp-bio">neurons, action potential, synapses</span></div>
+          <div class="block maths tickable"><span class="time">11:00–12:30</span>Maths: Statistics — data, distributions<span class="topic-pill tp-maths">normal dist, hypothesis testing</span></div>
+          <div class="block bio tickable"><span class="time">14:00–15:30</span>Bio Topic 6: Hormones + homeostasis<span class="topic-pill tp-bio">insulin, glucagon, ADH, thermoregulation</span></div>
+          <div class="block cs tickable"><span class="time">17:00–18:30</span>CS: Sorting algorithms — trace + complexity<span class="topic-pill tp-cs">bubble, merge, quick, insertion</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Thu</span><span class="day-date">2 Apr</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">09:00–10:30</span>Bio Topic 6: Muscles + coordination<span class="topic-pill tp-bio">sliding filament theory, slow/fast twitch</span></div>
+          <div class="block maths tickable"><span class="time">11:00–12:30</span>Maths: Statistics — PMCC, regression<span class="topic-pill tp-maths">Save My Exams Qs</span></div>
+          <div class="block bio tickable"><span class="time">14:00–15:30</span>Bio Topic 6: Topic Qs<span class="topic-pill tp-bio">Save My Exams</span></div>
+          <div class="block cs tickable"><span class="time">17:00–18:30</span>CS: Searching + Big O notation<span class="topic-pill tp-cs">linear, binary — trace + compare</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Fri</span><span class="day-date">3 Apr</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">09:00–10:30</span>Bio Topic 7: Genetics — inheritance + dihybrid crosses<span class="topic-pill tp-bio">Mendelian, chi-squared, linkage</span></div>
+          <div class="block maths tickable"><span class="time">11:00–12:30</span>Maths: Mechanics — kinematics, SUVAT<span class="topic-pill tp-maths">Save My Exams Qs</span></div>
+          <div class="block bio tickable"><span class="time">14:00–15:30</span>Bio Topic 7: Populations + Hardy-Weinberg<span class="topic-pill tp-bio">allele frequency calculations</span></div>
+          <div class="block cs tickable"><span class="time">17:00–18:30</span>CS: OOP — inheritance, encapsulation, polymorphism<span class="topic-pill tp-cs">write OOP examples on paper</span></div>
+        </div>
+      </div>
+      <div class="day-card weekend">
+        <div class="day-header"><span class="day-name">Sat</span><span class="day-date">4 Apr</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">10:00–12:00</span>Bio: Anki — Topics 5, 6, 7 new cards + review<span class="topic-pill tp-bio">spaced rep</span></div>
+          <div class="block maths tickable"><span class="time">13:00–15:00</span>Maths: Mechanics — forces, Newton's laws, friction<span class="topic-pill tp-maths">Save My Exams Qs</span></div>
+          <div class="block break"><span class="time">15:00+</span>Afternoon off — meet your mate?</div>
+        </div>
+      </div>
+      <div class="day-card weekend">
+        <div class="day-header"><span class="day-name">Sun</span><span class="day-date">5 Apr</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">10:00–11:30</span>Bio Topic 8: Ecosystems — succession, nutrient cycles<span class="topic-pill tp-bio">nitrogen cycle, carbon cycle</span></div>
+          <div class="block cs tickable"><span class="time">11:30–13:00</span>CS: Functional programming + paradigms<span class="topic-pill tp-cs">first-class functions, map/filter/reduce</span></div>
+          <div class="block break"><span class="time">13:00+</span>Rest</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-label">Easter Week 2 · 6–12 Apr — Consolidation + Topic Qs</div>
+    <div class="days-grid seven">
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Mon</span><span class="day-date">6 Apr</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">09:00–10:30</span>Bio Topic 8: Populations — predator-prey, conservation<span class="topic-pill tp-bio">population graphs</span></div>
+          <div class="block maths tickable"><span class="time">11:00–12:30</span>Maths: Mechanics — projectiles, moments<span class="topic-pill tp-maths">Save My Exams Qs</span></div>
+          <div class="block bio tickable"><span class="time">14:00–15:30</span>Bio Topic 8: Topic Qs<span class="topic-pill tp-bio">Save My Exams</span></div>
+          <div class="block cs tickable"><span class="time">17:00–18:30</span>CS: Finite state machines + regular languages<span class="topic-pill tp-cs">draw FSMs, transition tables</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Tue</span><span class="day-date">7 Apr</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">09:00–10:30</span>Bio: REQUIRED PRACTICALS — all 12 overview<span class="topic-pill tp-bio">method, variables, analysis for each</span></div>
+          <div class="block maths tickable"><span class="time">11:00–12:30</span>Maths: Any remaining weak topics — revisit<span class="topic-pill tp-maths">check topic checklist</span></div>
+          <div class="block bio tickable"><span class="time">14:00–15:30</span>Bio: Required practical Qs (Save My Exams)<span class="topic-pill tp-bio">focus on data analysis Qs</span></div>
+          <div class="block cs tickable"><span class="time">17:00–18:30</span>CS: Turing machines + Halting problem + theory<span class="topic-pill tp-cs">theory of computation</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Wed</span><span class="day-date">8 Apr</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">09:00–10:30</span>Bio: Timed topic Qs — Topics 1+2 (45 min each)<span class="topic-pill tp-bio">mark + error list</span></div>
+          <div class="block maths tickable"><span class="time">11:00–12:30</span>Maths: Proof — by contradiction, by induction<span class="topic-pill tp-maths">A* level content</span></div>
+          <div class="block bio tickable"><span class="time">14:00–15:30</span>Bio: Timed topic Qs — Topics 3+4<span class="topic-pill tp-bio">mark + error list</span></div>
+          <div class="block cs tickable"><span class="time">17:00–18:30</span>CS Paper 1: Full notes review — architecture + OS<span class="topic-pill tp-cs">CPU, memory, OS, networking</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Thu</span><span class="day-date">9 Apr</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">09:00–10:30</span>Bio: Timed topic Qs — Topics 5+6<span class="topic-pill tp-bio">mark + error list</span></div>
+          <div class="block maths tickable"><span class="time">11:00–12:30</span>Maths: Partial fractions + further algebra<span class="topic-pill tp-maths">Save My Exams Qs</span></div>
+          <div class="block bio tickable"><span class="time">14:00–15:30</span>Bio: Timed topic Qs — Topics 7+8<span class="topic-pill tp-bio">mark + error list</span></div>
+          <div class="block cs tickable"><span class="time">17:00–18:30</span>CS Paper 2: Full notes review — algorithms + OOP<span class="topic-pill tp-cs">write pseudocode for 5 algorithms</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Fri</span><span class="day-date">10 Apr</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">09:00–10:30</span>Bio: Anki FULL DECK — all 8 topics<span class="topic-pill tp-bio">clear all weak cards</span></div>
+          <div class="block maths tickable"><span class="time">11:00–12:30</span>Maths: Mixed topic Qs — Pure 1 sweep<span class="topic-pill tp-maths">Save My Exams</span></div>
+          <div class="block bio tickable"><span class="time">14:00–15:30</span>Bio: Error targets — re-revise any flagged gaps<span class="topic-pill tp-bio">from this week's error lists</span></div>
+          <div class="block cs tickable"><span class="time">17:00–18:30</span>CS: Topic Qs — Paper 1 topics (Save My Exams)<span class="topic-pill tp-cs">work through question bank</span></div>
+        </div>
+      </div>
+      <div class="day-card weekend">
+        <div class="day-header"><span class="day-name">Sat</span><span class="day-date">11 Apr</span></div>
+        <div class="day-body">
+          <div class="block maths tickable"><span class="time">10:00–12:00</span>Maths: Mixed topic Qs — Stats full sweep<span class="topic-pill tp-maths">hypothesis testing focus</span></div>
+          <div class="block cs tickable"><span class="time">13:00–15:00</span>CS: Topic Qs — Paper 2 topics<span class="topic-pill tp-cs">write algorithms from memory</span></div>
+          <div class="block break"><span class="time">15:00+</span>Evening free</div>
+        </div>
+      </div>
+      <div class="day-card weekend">
+        <div class="day-header"><span class="day-name">Sun</span><span class="day-date">12 Apr</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">10:00–11:30</span>Bio: Anki final run before school returns<span class="topic-pill tp-bio">weak cards only</span></div>
+          <div class="block maths tickable"><span class="time">11:30–13:00</span>Maths: Mixed topic Qs — Mechanics sweep<span class="topic-pill tp-maths">Save My Exams</span></div>
+          <div class="block break"><span class="time">13:00+</span>Rest — back to school tomorrow</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 3: BACK AT SCHOOL -->
+<div class="phase-section" id="phase-phase3">
+  <div class="phase-header">
+    <div class="phase-tag">PHASE 3</div>
+    <div class="phase-title">Final School Weeks — Past Papers Begin</div>
+    <div class="phase-subtitle">13 Apr – 22 May</div>
+  </div>
+  <div class="phase-note">
+    <strong>All content covered. Now it's repetition, past papers, and plugging gaps.</strong> Bio + CS move to full past papers now. Maths moves to past papers once teacher confirms topics are done. Free periods at school are shown in amber — use them for Bio or CS topic Qs / past paper Qs. Lunch (purple) is for Anki and lighter review. Study Hall sessions are labelled. This phase has two alternating week patterns.
+  </div>
+
+  <!-- WEEK 13-17 APR (WEEK B PATTERN) -->
+  <div class="week">
+    <div class="week-label">13–17 April · Week B Pattern · Back to School</div>
+    <div class="days-grid five">
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Mon</span><span class="day-date">13 Apr</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">No lessons Mon 13</span>No registration visible</div>
+          <div class="block bio tickable"><span class="time">10:00–12:00</span>Bio: Past paper 2023 Paper 1 (timed 2h)<span class="topic-pill tp-bio">mark + error log</span></div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Bio: Review mark scheme for morning paper<span class="topic-pill tp-lunch">note patterns</span></div>
+          <div class="block maths tickable"><span class="time">15:00–16:30</span>Maths: Topic Qs — hardest remaining gaps<span class="topic-pill tp-maths">from topic checklist</span></div>
+          <div class="block cs tickable"><span class="time">17:00–18:30 HOME</span>CS: Past paper Qs — Paper 1 section (Save My Exams)<span class="topic-pill tp-cs">work through Q bank</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Tue</span><span class="day-date">14 Apr</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">11:15–13:00</span>Biology x2</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Bio: Anki — any Topics 1–4 weak cards<span class="topic-pill tp-lunch">spaced rep</span></div>
+          <div class="block school"><span class="time">14:15–15:05</span>Maths lesson</div>
+          <div class="block school"><span class="time">15:05–16:00</span>Computer Science</div>
+          <div class="block bio tickable"><span class="time">17:00–18:30 HOME</span>Bio: Mark scheme analysis from Mon's paper<span class="topic-pill tp-bio">re-revise flagged topics</span></div>
+          <div class="block maths tickable"><span class="time">19:00–20:30 HOME</span>Maths: Topic Qs — weakest remaining topic<span class="topic-pill tp-maths">focus on errors</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Wed</span><span class="day-date">15 Apr</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">09:10–10:00</span>Biology lesson</div>
+          <div class="block free-period tickable"><span class="time">10:00–11:15 FREE</span>CS: Paper 2 past paper Qs — algorithms<span class="topic-pill tp-cs">trace through code on paper</span></div>
+          <div class="block school"><span class="time">11:15–12:05</span>Maths lesson</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Maths: Quick topic Qs — stats<span class="topic-pill tp-lunch">hypothesis testing</span></div>
+          <div class="block school"><span class="time">14:15–16:00</span>QED/EDGE x2</div>
+          <div class="block cs tickable"><span class="time">17:00–18:30 HOME</span>CS: Past paper P2 Qs continued<span class="topic-pill tp-cs">mark + review</span></div>
+          <div class="block bio tickable"><span class="time">19:00–20:30 HOME</span>Bio: Past paper 2022 Paper 2 (timed)<span class="topic-pill tp-bio">mark + error log</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Thu</span><span class="day-date">16 Apr</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">09:10–10:55</span>Maths x2</div>
+          <div class="block school"><span class="time">11:15–13:00</span>Computer Science x2</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Bio: Anki — Topics 5–8 weak cards<span class="topic-pill tp-lunch">spaced rep</span></div>
+          <div class="block study-hall tickable"><span class="time">14:15–15:05 STUDY HALL</span>Bio: P3 style Qs — practical data analysis<span class="topic-pill tp-bio">required practicals focus</span></div>
+          <div class="block school"><span class="time">15:05–16:00</span>Biology lesson</div>
+          <div class="block maths tickable"><span class="time">17:00–18:30 HOME</span>Maths: Stats + Mechanics mixed topic Qs<span class="topic-pill tp-maths">Save My Exams</span></div>
+          <div class="block bio tickable"><span class="time">19:00–20:30 HOME</span>Bio: Error targets from Wed paper<span class="topic-pill tp-bio">re-revise flagged areas</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Fri</span><span class="day-date">17 Apr</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">09:10–10:55</span>Computer Science x2</div>
+          <div class="block free-period tickable"><span class="time">10:55–11:15 FREE</span>CS: Write one algorithm from memory (merge sort / Dijkstra's)</div>
+          <div class="block school"><span class="time">11:15–13:00</span>Computer Science</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Maths: Skim any remaining topic notes<span class="topic-pill tp-lunch">light</span></div>
+          <div class="block school"><span class="time">14:15–15:05</span>Biology lesson</div>
+          <div class="block school"><span class="time">15:05–16:00</span>Maths lesson</div>
+          <div class="block bio tickable"><span class="time">17:00–18:30 HOME</span>Bio: Anki full deck run<span class="topic-pill tp-bio">all 8 topics</span></div>
+          <div class="block cs tickable"><span class="time">19:00–20:30 HOME</span>CS: Full Paper 1 past paper (timed 2h30)<span class="topic-pill tp-cs">mark + review</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 20-24 APR (WEEK A PATTERN) -->
+  <div class="week">
+    <div class="week-label">20–24 April · Week A Pattern</div>
+    <div class="days-grid five">
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Mon</span><span class="day-date">20 Apr</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">09:10–10:00</span>Computer Science</div>
+          <div class="block free-period tickable"><span class="time">10:00–11:10 FREE (after CS ends)</span>Bio: Past paper P1 2024 (timed, use free + lunch)<span class="topic-pill tp-bio">mark after school</span></div>
+          <div class="block school"><span class="time">10:00–10:55</span>Computer Science</div>
+          <div class="block school"><span class="time">12:05–13:00</span>Biology lesson</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Bio: Mark scheme for past paper Qs done in free<span class="topic-pill tp-lunch">quick mark + error note</span></div>
+          <div class="block study-hall tickable"><span class="time">14:15–15:05 STUDY HALL</span>Maths: Topic Qs — whatever topic you're still shaky on</div>
+          <div class="block maths tickable"><span class="time">17:00–18:30 HOME</span>Maths: Mixed Pure topic Qs — Pure 2 sweep<span class="topic-pill tp-maths">Save My Exams</span></div>
+          <div class="block cs tickable"><span class="time">19:00–20:30 HOME</span>CS: Past paper P2 (timed)<span class="topic-pill tp-cs">mark + algorithm review</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Tue</span><span class="day-date">21 Apr</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">09:10–10:55</span>Maths x2</div>
+          <div class="block free-period tickable"><span class="time">10:55–11:15 FREE</span>Maths: Quickly redo any Q from lesson you found hard</div>
+          <div class="block school"><span class="time">11:15–13:00</span>Computer Science x2</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>CS: Anki — CS definitions flashcards<span class="topic-pill tp-lunch">data structures, OS terms</span></div>
+          <div class="block study-hall tickable"><span class="time">14:15–15:05 STUDY HALL</span>Bio: Error targets from last past paper<span class="topic-pill tp-bio">re-revise weak topics</span></div>
+          <div class="block school"><span class="time">15:05–16:00</span>Biology lesson</div>
+          <div class="block bio tickable"><span class="time">17:00–18:30 HOME</span>Bio: Past paper 2023 P2 (timed)<span class="topic-pill tp-bio">mark + error log</span></div>
+          <div class="block maths tickable"><span class="time">19:00–20:30 HOME</span>Maths: Stats — hypothesis testing + distributions<span class="topic-pill tp-maths">Save My Exams</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Wed</span><span class="day-date">22 Apr</span></div>
+        <div class="day-body">
+          <div class="block free-period tickable"><span class="time">09:10–10:00 FREE</span>CS: Paper 1 Q bank — databases section<span class="topic-pill tp-cs">Save My Exams</span></div>
+          <div class="block school"><span class="time">10:00–10:55</span>Computer Science</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Bio: Anki full deck — weak cards only<span class="topic-pill tp-lunch">15 mins max</span></div>
+          <div class="block school"><span class="time">14:15–15:05</span>QED/EDGE</div>
+          <div class="block school"><span class="time">15:05–16:00</span>QED/EDGE</div>
+          <div class="block maths tickable"><span class="time">17:00–18:30 HOME</span>Maths: Full mixed topic paper (timed, Save My Exams)<span class="topic-pill tp-maths">exam conditions</span></div>
+          <div class="block bio tickable"><span class="time">19:00–20:30 HOME</span>Bio: P3 past paper (timed)<span class="topic-pill tp-bio">practical + essay Q</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Thu</span><span class="day-date">23 Apr</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">11:15–13:00</span>Biology x2</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Maths: Review past paper errors — redo wrong Qs<span class="topic-pill tp-lunch">targeted fix</span></div>
+          <div class="block study-hall tickable"><span class="time">14:15–15:05 STUDY HALL</span>CS: Write algorithms from memory — no notes<span class="topic-pill tp-cs">Dijkstra's, merge sort, binary search</span></div>
+          <div class="block school"><span class="time">15:05–16:00</span>Computer Science</div>
+          <div class="block maths tickable"><span class="time">17:00–18:30 HOME</span>Maths: Mechanics — projectiles, moments, friction<span class="topic-pill tp-maths">Save My Exams Qs</span></div>
+          <div class="block cs tickable"><span class="time">19:00–20:30 HOME</span>CS: Full Paper 1 past paper (timed)<span class="topic-pill tp-cs">mark + review</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Fri</span><span class="day-date">24 Apr</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">09:10–10:55</span>Biology x2</div>
+          <div class="block school"><span class="time">11:15–13:00</span>Maths x2</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Bio: Anki — hardest cards from this week<span class="topic-pill tp-lunch">spaced rep</span></div>
+          <div class="block school"><span class="time">14:15–15:05</span>Computer Science</div>
+          <div class="block bio tickable"><span class="time">16:30–18:00 HOME (leave early)</span>Bio: Past paper P1 (different year, timed)<span class="topic-pill tp-bio">cycle through years</span></div>
+          <div class="block maths tickable"><span class="time">18:30–20:00 HOME</span>Maths: Pure — hardest topic revisit<span class="topic-pill tp-maths">proof, parametric equations</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 27 APR – 1 MAY (WEEK A) -->
+  <div class="week">
+    <div class="week-label">27 Apr – 1 May · Week A Pattern</div>
+    <div class="days-grid five">
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Mon</span><span class="day-date">27 Apr</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">10:00–10:55</span>Biology lesson</div>
+          <div class="block school"><span class="time">11:15–12:05</span>Maths lesson</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Bio: Anki + review past paper error log<span class="topic-pill tp-lunch">what keeps coming up wrong?</span></div>
+          <div class="block study-hall tickable"><span class="time">14:15–15:05 STUDY HALL</span>Maths: Mixed topic Qs — weakest remaining<span class="topic-pill tp-maths">Save My Exams</span></div>
+          <div class="block school"><span class="time">15:05–16:00</span>Form Prog</div>
+          <div class="block bio tickable"><span class="time">17:00–18:30 HOME</span>Bio: Past paper 2022 P2 (timed)<span class="topic-pill tp-bio">mark + error log</span></div>
+          <div class="block cs tickable"><span class="time">19:00–20:30 HOME</span>CS: Paper 2 Qs — OOP + functional paradigm<span class="topic-pill tp-cs">Save My Exams</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Tue</span><span class="day-date">28 Apr</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">11:15–13:00</span>Biology x2</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>CS: Anki — all CS definitions<span class="topic-pill tp-lunch">quick fire review</span></div>
+          <div class="block study-hall tickable"><span class="time">14:15–15:05 STUDY HALL</span>Bio: P3 style Qs — essay answer practice<span class="topic-pill tp-bio">write a 9-mark answer from memory</span></div>
+          <div class="block school"><span class="time">15:05–16:00</span>Computer Science</div>
+          <div class="block cs tickable"><span class="time">17:00–18:30 HOME</span>CS: Full Paper 2 past paper (timed)<span class="topic-pill tp-cs">mark + review</span></div>
+          <div class="block bio tickable"><span class="time">19:00–20:30 HOME</span>Bio: Error targets from Mon's paper<span class="topic-pill tp-bio">re-revise flagged areas</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Wed</span><span class="day-date">29 Apr</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">09:10–10:00</span>Biology lesson</div>
+          <div class="block free-period tickable"><span class="time">10:00–11:10 FREE</span>Maths: Full mixed topic paper section (timed)<span class="topic-pill tp-maths">Pure 1 questions</span></div>
+          <div class="block school"><span class="time">11:15–12:05</span>Maths lesson</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Maths: Mark the free period paper — note errors<span class="topic-pill tp-lunch">targeted marking</span></div>
+          <div class="block school"><span class="time">14:15–16:00</span>QED/EDGE x2</div>
+          <div class="block maths tickable"><span class="time">17:00–18:30 HOME</span>Maths: Past paper P1 (timed — if all topics covered)<span class="topic-pill tp-maths">exam conditions</span></div>
+          <div class="block bio tickable"><span class="time">19:00–20:30 HOME</span>Bio: Past paper P1 (different year)<span class="topic-pill tp-bio">timed + mark</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Thu</span><span class="day-date">30 Apr</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">09:10–10:55</span>Maths x2</div>
+          <div class="block school"><span class="time">11:15–13:00</span>Computer Science x2</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Bio: Anki — full deck weak cards<span class="topic-pill tp-lunch">spaced rep</span></div>
+          <div class="block study-hall tickable"><span class="time">14:15–15:05 STUDY HALL</span>CS: Weak topic deep-dive from past paper errors<span class="topic-pill tp-cs">targeted revision</span></div>
+          <div class="block school"><span class="time">15:05–16:00</span>Biology lesson</div>
+          <div class="block cs tickable"><span class="time">17:00–18:30 HOME</span>CS: Full Paper 1 past paper (timed)<span class="topic-pill tp-cs">mark + review</span></div>
+          <div class="block maths tickable"><span class="time">19:00–20:30 HOME</span>Maths: A* differentiator Qs — proof + hardest Pure<span class="topic-pill tp-maths">Save My Exams hard Qs</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Fri</span><span class="day-date">1 May</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">09:10–10:55</span>Computer Science x2</div>
+          <div class="block school"><span class="time">11:15–13:00</span>Biology x2 (+ possible free)</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Maths: Skim any topic still feeling shaky<span class="topic-pill tp-lunch">notes only</span></div>
+          <div class="block school"><span class="time">14:15–16:00</span>Biology + Maths lessons</div>
+          <div class="block bio tickable"><span class="time">17:00–18:30 HOME</span>Bio: Past paper P2 (latest available year)<span class="topic-pill tp-bio">timed + mark</span></div>
+          <div class="block maths tickable"><span class="time">19:00–20:30 HOME</span>Maths: Past paper Pure section (timed)<span class="topic-pill tp-maths">exam conditions</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAY 4-8 -->
+  <div class="week">
+    <div class="week-label">4–8 May · Bank Holiday Mon + Week B Pattern</div>
+    <div class="days-grid five">
+      <div class="day-card weekend">
+        <div class="day-header"><span class="day-name">Mon</span><span class="day-date">4 May 🏦</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">10:00–12:00</span>Bio: Full past paper P3 (timed + mark)<span class="topic-pill tp-bio">practical Qs esp.</span></div>
+          <div class="block maths tickable"><span class="time">13:00–15:00</span>Maths: Past paper P2 Pure 2 (timed + mark)<span class="topic-pill tp-maths">full exam conditions</span></div>
+          <div class="block cs tickable"><span class="time">15:30–17:00</span>CS: Write 5 algorithms from memory (no notes)<span class="topic-pill tp-cs">Dijkstra, merge, bubble, binary, BFS</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Tue</span><span class="day-date">5 May</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">09:10–10:55</span>Maths x2</div>
+          <div class="block school"><span class="time">11:15–13:00</span>Computer Science x2</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Bio: Anki + review BH paper errors<span class="topic-pill tp-lunch">targeted</span></div>
+          <div class="block study-hall tickable"><span class="time">14:15–15:05 STUDY HALL</span>Bio: P3 essay practice — write 9-mark answer<span class="topic-pill tp-bio">from memory, mark vs mark scheme</span></div>
+          <div class="block school"><span class="time">15:05–16:00</span>Biology lesson</div>
+          <div class="block maths tickable"><span class="time">17:00–18:30 HOME</span>Maths: Stats + Mechanics past paper section (timed)<span class="topic-pill tp-maths">P3 style</span></div>
+          <div class="block cs tickable"><span class="time">19:00–20:30 HOME</span>CS: Full Paper 2 past paper (timed)<span class="topic-pill tp-cs">mark + algorithm review</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Wed</span><span class="day-date">6 May</span></div>
+        <div class="day-body">
+          <div class="block free-period tickable"><span class="time">09:10–10:00 FREE</span>Bio: Past paper Qs — hardest topics only<span class="topic-pill tp-bio">photosynthesis + genetics Qs</span></div>
+          <div class="block school"><span class="time">10:00–10:55</span>Computer Science</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>CS: Anki — CS definitions review<span class="topic-pill tp-lunch">data structures, OS</span></div>
+          <div class="block school"><span class="time">14:15–16:00</span>QED/EDGE x2</div>
+          <div class="block bio tickable"><span class="time">17:00–18:30 HOME</span>Bio: Past paper P1 (different year, timed)<span class="topic-pill tp-bio">rotate through available years</span></div>
+          <div class="block cs tickable"><span class="time">19:00–20:30 HOME</span>CS: Full Paper 1 past paper (timed)<span class="topic-pill tp-cs">mark + note error patterns</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Thu</span><span class="day-date">7 May</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">11:15–13:00</span>Biology x2</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Maths: Review past paper error sheet — redo wrong Qs<span class="topic-pill tp-lunch">targeted</span></div>
+          <div class="block study-hall tickable"><span class="time">14:15–15:05 STUDY HALL</span>Maths: Past paper Qs — P1 harder questions<span class="topic-pill tp-maths">Save My Exams hard bank</span></div>
+          <div class="block school"><span class="time">15:05–16:00</span>Computer Science</div>
+          <div class="block maths tickable"><span class="time">17:00–18:30 HOME</span>Maths: Full past paper P1 (timed)<span class="topic-pill tp-maths">if teacher approved</span></div>
+          <div class="block bio tickable"><span class="time">19:00–20:30 HOME</span>Bio: Anki full deck — final weak cards sweep<span class="topic-pill tp-bio">spaced rep</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Fri</span><span class="day-date">8 May</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">09:10–10:55</span>Biology x2</div>
+          <div class="block school"><span class="time">11:15–13:00</span>Maths x2</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>CS: Write algorithms from memory + check<span class="topic-pill tp-lunch">no notes</span></div>
+          <div class="block school"><span class="time">14:15–15:05</span>Computer Science</div>
+          <div class="block bio tickable"><span class="time">16:30–18:00 HOME (early)</span>Bio: P2+P3 hardest topics Qs only<span class="topic-pill tp-bio">genetics, photosynthesis</span></div>
+          <div class="block maths tickable"><span class="time">18:30–20:00 HOME</span>Maths: Past paper P2 (timed)<span class="topic-pill tp-maths">mark + review</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAY 11-15 -->
+  <div class="week">
+    <div class="week-label">11–15 May · Week A Pattern · 3 Weeks to First Exam</div>
+    <div class="days-grid five">
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Mon</span><span class="day-date">11 May</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">10:00–10:55</span>Biology lesson</div>
+          <div class="block school"><span class="time">11:15–12:05</span>Maths lesson</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Bio: Anki + error log review<span class="topic-pill tp-lunch">what's still coming up wrong?</span></div>
+          <div class="block study-hall tickable"><span class="time">14:15–15:05 STUDY HALL</span>Bio: Past paper Qs — P1 topic by topic<span class="topic-pill tp-bio">Save My Exams targeted</span></div>
+          <div class="block bio tickable"><span class="time">17:00–18:30 HOME</span>Bio: Full past paper P1 (latest year, timed)<span class="topic-pill tp-bio">mark + error log</span></div>
+          <div class="block maths tickable"><span class="time">19:00–20:30 HOME</span>Maths: Past paper P2 (timed)<span class="topic-pill tp-maths">mark + error log</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Tue</span><span class="day-date">12 May</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">11:15–13:00</span>Biology x2</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>CS: Anki — all definitions + algorithm complexities<span class="topic-pill tp-lunch">quick review</span></div>
+          <div class="block school"><span class="time">14:15–15:05</span>Maths lesson</div>
+          <div class="block school"><span class="time">15:05–16:00</span>Computer Science</div>
+          <div class="block cs tickable"><span class="time">17:00–18:30 HOME</span>CS: Full Paper 2 past paper (timed)<span class="topic-pill tp-cs">mark + algorithm focus</span></div>
+          <div class="block bio tickable"><span class="time">19:00–20:30 HOME</span>Bio: Error analysis + Anki — gaps from Mon paper<span class="topic-pill tp-bio">re-learn any remaining gaps</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Wed</span><span class="day-date">13 May</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">09:10–10:00</span>Biology lesson</div>
+          <div class="block free-period tickable"><span class="time">10:00–11:10 FREE</span>Maths: Past paper P3 Stats section (timed)<span class="topic-pill tp-maths">35 min section</span></div>
+          <div class="block school"><span class="time">11:15–12:05</span>Maths lesson</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Maths: Mark the free period paper + review<span class="topic-pill tp-lunch">targeted fix</span></div>
+          <div class="block school"><span class="time">14:15–16:00</span>QED/EDGE x2</div>
+          <div class="block maths tickable"><span class="time">17:00–18:30 HOME</span>Maths: Past paper P3 full (timed)<span class="topic-pill tp-maths">Stats + Mechanics</span></div>
+          <div class="block bio tickable"><span class="time">19:00–20:30 HOME</span>Bio: Past paper P2 (different year, timed)<span class="topic-pill tp-bio">mark + error log</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Thu</span><span class="day-date">14 May</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">09:10–10:55</span>Maths x2</div>
+          <div class="block school"><span class="time">11:15–13:00</span>Computer Science x2</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Bio: Anki — hard cards only<span class="topic-pill tp-lunch">spaced rep</span></div>
+          <div class="block study-hall tickable"><span class="time">14:15–15:05 STUDY HALL</span>Bio: Past paper P3 (timed, write full answers)<span class="topic-pill tp-bio">practical + essay</span></div>
+          <div class="block school"><span class="time">15:05–16:00</span>Biology lesson</div>
+          <div class="block cs tickable"><span class="time">17:00–18:30 HOME</span>CS: Full Paper 1 past paper (timed)<span class="topic-pill tp-cs">latest available year</span></div>
+          <div class="block maths tickable"><span class="time">19:00–20:30 HOME</span>Maths: Review ALL past paper error sheets — correction run<span class="topic-pill tp-maths">redo every wrong Q type</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Fri</span><span class="day-date">15 May</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">09:10–10:55</span>Computer Science x2</div>
+          <div class="block school"><span class="time">11:15–13:00</span>Computer Science</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Bio: Create personal formula + fact sheet<span class="topic-pill tp-lunch">one side of A4 per topic</span></div>
+          <div class="block school"><span class="time">14:15–16:00</span>Biology + Maths lessons</div>
+          <div class="block bio tickable"><span class="time">17:00–18:30 HOME</span>Bio: Anki full deck + review personal fact sheets<span class="topic-pill tp-bio">consolidation</span></div>
+          <div class="block cs tickable"><span class="time">19:00–20:30 HOME</span>CS: Full Paper 2 past paper (timed)<span class="topic-pill tp-cs">mark + final error log</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAY 18-22 — LAST SCHOOL WEEK -->
+  <div class="week">
+    <div class="week-label">18–22 May · Last School Week · Final Gear</div>
+    <div class="days-grid five">
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Mon</span><span class="day-date">18 May</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">09:10–10:55</span>Computer Science x2</div>
+          <div class="block school"><span class="time">12:05–13:00</span>Biology lesson</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Bio: Anki — full deck hard cards only<span class="topic-pill tp-lunch">final run</span></div>
+          <div class="block study-hall tickable"><span class="time">14:15–15:05 STUDY HALL</span>Maths: Error correction sheet — every Q I still get wrong<span class="topic-pill tp-maths">targeted</span></div>
+          <div class="block maths tickable"><span class="time">17:00–18:30 HOME</span>Maths: Full past paper P1 (timed, simulate real exam)<span class="topic-pill tp-maths">exam conditions</span></div>
+          <div class="block bio tickable"><span class="time">19:00–20:30 HOME</span>Bio: Past paper P1 (final run, latest year)<span class="topic-pill tp-bio">strict timing</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Tue</span><span class="day-date">19 May</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">09:10–10:55</span>Maths x2</div>
+          <div class="block school"><span class="time">11:15–13:00</span>Computer Science x2</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>CS: Final algorithm practice — write 3 from memory<span class="topic-pill tp-lunch">no notes</span></div>
+          <div class="block study-hall tickable"><span class="time">14:15–15:05 STUDY HALL</span>CS: Past paper P2 Qs — hardest algorithm Qs<span class="topic-pill tp-cs">mark scheme language focus</span></div>
+          <div class="block school"><span class="time">15:05–16:00</span>Biology lesson</div>
+          <div class="block cs tickable"><span class="time">17:00–18:30 HOME</span>CS: Full Paper 1 past paper (timed)<span class="topic-pill tp-cs">mark + final error log</span></div>
+          <div class="block bio tickable"><span class="time">19:00–20:30 HOME</span>Bio: Past paper P2 (simulate — strict timing)<span class="topic-pill tp-bio">mark + note any new gaps</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Wed</span><span class="day-date">20 May</span></div>
+        <div class="day-body">
+          <div class="block free-period tickable"><span class="time">09:10–10:00 FREE</span>Bio: Shaky topics targeted Qs — last chance<span class="topic-pill tp-bio">whatever's still weak</span></div>
+          <div class="block school"><span class="time">10:00–10:55</span>Computer Science</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>Maths: Formula sheet read + skim key methods<span class="topic-pill tp-lunch">light review</span></div>
+          <div class="block school"><span class="time">14:15–16:00</span>QED/EDGE x2</div>
+          <div class="block maths tickable"><span class="time">17:00–18:30 HOME</span>Maths: P2 + P3 combined past paper practice<span class="topic-pill tp-maths">exam conditions</span></div>
+          <div class="block bio tickable"><span class="time">19:00–20:30 HOME</span>Bio: Final sweep — any topics still flagged as shaky<span class="topic-pill tp-bio">targeted, no new content</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Thu</span><span class="day-date">21 May</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">11:15–13:00</span>Biology x2</div>
+          <div class="block lunch-rev tickable"><span class="time">13:00–14:05 LUNCH</span>CS: Read over CS notes — key definitions only<span class="topic-pill tp-lunch">light, calm</span></div>
+          <div class="block study-hall tickable"><span class="time">14:15–15:05 STUDY HALL</span>Bio: Anki — absolutely final run of hard cards<span class="topic-pill tp-bio">no new cards</span></div>
+          <div class="block school"><span class="time">15:05–16:00</span>Computer Science</div>
+          <div class="block bio tickable"><span class="time">17:00–18:30 HOME</span>Bio: LIGHT — skim topic summaries only<span class="topic-pill tp-bio">calm, no pressure</span></div>
+          <div class="block cs tickable"><span class="time">19:00–20:00 HOME</span>CS: P1 definitions + short-answer Qs (2-mark Qs)<span class="topic-pill tp-cs">mark scheme language</span></div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Fri</span><span class="day-date">22 May</span></div>
+        <div class="day-body">
+          <div class="block school"><span class="time">Last school day</span>🎓 Study Leave starts</div>
+          <div class="block maths tickable"><span class="time">17:00–18:00 HOME</span>Maths: Formula sheet read only — light<span class="topic-pill tp-maths">calm run through</span></div>
+          <div class="block bio tickable"><span class="time">18:00–19:00 HOME</span>Bio: Skim topic summaries — refresh, don't stress<span class="topic-pill tp-bio">light</span></div>
+          <div class="block break"><span class="time">19:00+</span>REST — study leave tomorrow. Get sleep early 🛌</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 4: STUDY LEAVE -->
+<div class="phase-section" id="phase-phase4">
+  <div class="phase-header">
+    <div class="phase-tag">PHASE 4</div>
+    <div class="phase-title">Study Leave — Lock In</div>
+    <div class="phase-subtitle">23 May – 2 Jun</div>
+  </div>
+  <div class="phase-note">
+    <strong>This is it. No school, no commute, no excuses.</strong> Wake 07:30 every day. Target <strong>7–9 hours of structured revision per day</strong> across 5 blocks with proper breaks. Every day has a morning grind session (09:00–12:30), a lunch break, an afternoon session (14:00–17:30), a dinner break, then an evening session (19:00–21:30). Anki 20 mins every single morning before block 1. The final 2 days before each exam taper down — but only those 2 days. The last 2 days before your <em>first</em> exam (1–2 June) are the only real rest days in this phase.
+  </div>
+
+  <!-- WEEK 23-29 MAY -->
+  <div class="week">
+    <div class="week-label">23–29 May · Full Lock-In Week · ~8hrs/day</div>
+    <div class="days-grid seven">
+
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Sat</span><span class="day-date">23 May</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">08:00–08:20</span>Anki — full deck, hard cards only<span class="topic-pill tp-bio">daily habit</span></div>
+          <div class="block maths tickable"><span class="time">09:00–11:00</span>Maths: Full past paper P1 (timed, exam conditions)<span class="topic-pill tp-maths">mark immediately after</span></div>
+          <div class="block maths tickable"><span class="time">11:00–12:30</span>Maths: Mark P1 + full error correction — redo every wrong Q<span class="topic-pill tp-maths">understand each mistake</span></div>
+          <div class="block break"><span class="time">12:30–14:00</span>Lunch + break</div>
+          <div class="block bio tickable"><span class="time">14:00–16:00</span>Bio: Full past paper P1 (timed, exam conditions)<span class="topic-pill tp-bio">mark immediately after</span></div>
+          <div class="block bio tickable"><span class="time">16:00–17:30</span>Bio: Mark P1 + error correction — note every gap<span class="topic-pill tp-bio">update error log</span></div>
+          <div class="block break"><span class="time">17:30–19:00</span>Dinner + break</div>
+          <div class="block cs tickable"><span class="time">19:00–21:00</span>CS: Full past paper P1 (timed, exam conditions)<span class="topic-pill tp-cs">mark + review</span></div>
+          <div class="block cs tickable"><span class="time">21:00–21:30</span>CS: Error correction — redo wrong Qs<span class="topic-pill tp-cs">targeted</span></div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Sun</span><span class="day-date">24 May</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">08:00–08:20</span>Anki — weak cards from yesterday's errors<span class="topic-pill tp-bio">targeted</span></div>
+          <div class="block maths tickable"><span class="time">09:00–11:00</span>Maths: Full past paper P2 (timed)<span class="topic-pill tp-maths">exam conditions</span></div>
+          <div class="block maths tickable"><span class="time">11:00–12:30</span>Maths: Mark P2 + error correction<span class="topic-pill tp-maths">update error log</span></div>
+          <div class="block break"><span class="time">12:30–14:00</span>Lunch + break</div>
+          <div class="block bio tickable"><span class="time">14:00–16:00</span>Bio: Full past paper P2 (timed)<span class="topic-pill tp-bio">exam conditions</span></div>
+          <div class="block bio tickable"><span class="time">16:00–17:30</span>Bio: Mark P2 + error correction + Anki new cards<span class="topic-pill tp-bio">fill every gap</span></div>
+          <div class="block break"><span class="time">17:30–19:00</span>Dinner + break</div>
+          <div class="block cs tickable"><span class="time">19:00–21:00</span>CS: Full past paper P2 (timed)<span class="topic-pill tp-cs">exam conditions</span></div>
+          <div class="block cs tickable"><span class="time">21:00–21:30</span>CS: Write 3 algorithms from memory — check vs notes<span class="topic-pill tp-cs">merge sort, Dijkstra's, BFS</span></div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Mon</span><span class="day-date">25 May</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">08:00–08:20</span>Anki — daily habit, all subjects<span class="topic-pill tp-bio">keep decks fresh</span></div>
+          <div class="block maths tickable"><span class="time">09:00–11:00</span>Maths: Full past paper P3 Stats+Mech (timed)<span class="topic-pill tp-maths">exam conditions</span></div>
+          <div class="block maths tickable"><span class="time">11:00–12:30</span>Maths: Mark P3 + error correction — Stats + Mech weak spots<span class="topic-pill tp-maths">update error log</span></div>
+          <div class="block break"><span class="time">12:30–14:00</span>Lunch + break</div>
+          <div class="block bio tickable"><span class="time">14:00–16:00</span>Bio: Full past paper P3 (timed)<span class="topic-pill tp-bio">practical + essay Qs</span></div>
+          <div class="block bio tickable"><span class="time">16:00–17:30</span>Bio: Mark P3 + practice re-writing essay answers to 9-mark Qs<span class="topic-pill tp-bio">mark scheme language</span></div>
+          <div class="block break"><span class="time">17:30–19:00</span>Dinner + break</div>
+          <div class="block cs tickable"><span class="time">19:00–20:30</span>CS: P1 weak topic deep dive — from error log<span class="topic-pill tp-cs">targeted, whatever came up wrong</span></div>
+          <div class="block maths tickable"><span class="time">20:30–21:30</span>Maths: Redo every wrong Q type from P1+P2+P3 errors<span class="topic-pill tp-maths">correction run</span></div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Tue</span><span class="day-date">26 May</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">08:00–08:20</span>Anki — focus on Bio hard cards<span class="topic-pill tp-bio">daily</span></div>
+          <div class="block maths tickable"><span class="time">09:00–11:00</span>Maths: Full past paper P1 (different year, timed)<span class="topic-pill tp-maths">rotate through years</span></div>
+          <div class="block bio tickable"><span class="time">11:00–12:30</span>Bio: P1 targeted Qs — hardest topics only (photosynthesis, genetics)<span class="topic-pill tp-bio">Save My Exams hard bank</span></div>
+          <div class="block break"><span class="time">12:30–14:00</span>Lunch + break</div>
+          <div class="block cs tickable"><span class="time">14:00–16:30</span>CS: Full past paper P2 (different year, timed) + mark<span class="topic-pill tp-cs">exam conditions</span></div>
+          <div class="block bio tickable"><span class="time">16:30–17:30</span>Bio: Required practicals — write out method + analysis for 6 practicals from memory<span class="topic-pill tp-bio">no notes</span></div>
+          <div class="block break"><span class="time">17:30–19:00</span>Dinner + break</div>
+          <div class="block maths tickable"><span class="time">19:00–20:30</span>Maths: A* hard Qs — proof, parametric, hardest integration types<span class="topic-pill tp-maths">Save My Exams hardest bank</span></div>
+          <div class="block cs tickable"><span class="time">20:30–21:30</span>CS: P1 definitions blitz — write answers to 2-mark Qs from memory<span class="topic-pill tp-cs">mark scheme language</span></div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Wed</span><span class="day-date">27 May</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">08:00–08:20</span>Anki — all subjects<span class="topic-pill tp-bio">daily</span></div>
+          <div class="block bio tickable"><span class="time">09:00–11:00</span>Bio: Full past paper P1 (another year, timed) + mark<span class="topic-pill tp-bio">cycle through all available years</span></div>
+          <div class="block maths tickable"><span class="time">11:00–12:30</span>Maths: Full past paper P2 (different year, timed)<span class="topic-pill tp-maths">exam conditions</span></div>
+          <div class="block break"><span class="time">12:30–14:00</span>Lunch + break</div>
+          <div class="block cs tickable"><span class="time">14:00–16:30</span>CS: Full past paper P1 (different year, timed) + mark<span class="topic-pill tp-cs">exam conditions</span></div>
+          <div class="block bio tickable"><span class="time">16:30–17:30</span>Bio: Remaining 6 required practicals — method + analysis from memory<span class="topic-pill tp-bio">complete all 12</span></div>
+          <div class="block break"><span class="time">17:30–19:00</span>Dinner + break</div>
+          <div class="block maths tickable"><span class="time">19:00–20:30</span>Maths: Mark P2 errors + redo wrong Qs + formula sheet review<span class="topic-pill tp-maths">targeted fix</span></div>
+          <div class="block cs tickable"><span class="time">20:30–21:30</span>CS: Write all sorting algorithms from memory, trace through one example each<span class="topic-pill tp-cs">no notes</span></div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Thu</span><span class="day-date">28 May</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">08:00–08:20</span>Anki — final heavy day, clear all remaining weak cards<span class="topic-pill tp-bio">targeted</span></div>
+          <div class="block maths tickable"><span class="time">09:00–11:00</span>Maths: Full past paper P3 (different year, timed) + mark<span class="topic-pill tp-maths">Stats + Mech</span></div>
+          <div class="block bio tickable"><span class="time">11:00–12:30</span>Bio: Full past paper P2 (another year, timed) + mark<span class="topic-pill tp-bio">exam conditions</span></div>
+          <div class="block break"><span class="time">12:30–14:00</span>Lunch + break</div>
+          <div class="block cs tickable"><span class="time">14:00–16:30</span>CS: Full past paper P2 (another year, timed) + mark<span class="topic-pill tp-cs">exam conditions</span></div>
+          <div class="block maths tickable"><span class="time">16:30–17:30</span>Maths: Consolidation — write out every formula you need to know/derive<span class="topic-pill tp-maths">make final formula sheet</span></div>
+          <div class="block break"><span class="time">17:30–19:00</span>Dinner + break</div>
+          <div class="block bio tickable"><span class="time">19:00–20:30</span>Bio: Full past paper P3 (another year, timed) + mark<span class="topic-pill tp-bio">practical + essay</span></div>
+          <div class="block cs tickable"><span class="time">20:30–21:30</span>CS: Final error log review — every mistake across all CS papers this week<span class="topic-pill tp-cs">make a 1-page mistake list</span></div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Fri</span><span class="day-date">29 May</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">08:00–08:20</span>Anki — final normal Anki session<span class="topic-pill tp-bio">daily</span></div>
+          <div class="block maths tickable"><span class="time">09:00–10:30</span>Maths: Redo EVERY Q type still in error log — no timed pressure<span class="topic-pill tp-maths">pure targeted correction</span></div>
+          <div class="block bio tickable"><span class="time">10:30–12:00</span>Bio: Redo worst Bio Q types from error log<span class="topic-pill tp-bio">targeted correction</span></div>
+          <div class="block break"><span class="time">12:00–13:30</span>Lunch + break</div>
+          <div class="block cs tickable"><span class="time">13:30–15:00</span>CS: Redo worst CS Q types from error log + write 2 algorithms from memory<span class="topic-pill tp-cs">targeted correction</span></div>
+          <div class="block maths tickable"><span class="time">15:00–16:30</span>Maths: Formula sheet + mark scheme language — read through calmly<span class="topic-pill tp-maths">consolidation, no new Qs</span></div>
+          <div class="block break"><span class="time">16:30–19:00</span>Break + dinner</div>
+          <div class="block bio tickable"><span class="time">19:00–20:00</span>Bio: Anki — weak cards only, then close the decks<span class="topic-pill tp-bio">final Anki for a while</span></div>
+          <div class="block break"><span class="time">20:00+</span>Done for the week. Walking Dead 🧟 Sleep by 22:30.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FINAL DAYS 30 MAY - 2 JUN -->
+  <div class="week">
+    <div class="week-label">30 May – 2 June · Taper Week · Maths P1 is Wed 3 Jun PM</div>
+    <div class="days-grid four">
+
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Sat</span><span class="day-date">30 May</span></div>
+        <div class="day-body">
+          <div class="block maths tickable"><span class="time">09:00–10:30</span>Maths: Final full paper (newest/hardest year, timed)<span class="topic-pill tp-maths">last full paper</span></div>
+          <div class="block maths tickable"><span class="time">10:30–11:30</span>Maths: Mark + final error correction — done after this<span class="topic-pill tp-maths">close the error log</span></div>
+          <div class="block bio tickable"><span class="time">12:00–13:30</span>Bio: P1 topic summary skim — all 4 topics, notes only<span class="topic-pill tp-bio">no new questions</span></div>
+          <div class="block break"><span class="time">13:30–15:00</span>Lunch + break</div>
+          <div class="block cs tickable"><span class="time">15:00–16:30</span>CS: Final P1 topic summary read — architecture, OS, networking, databases<span class="topic-pill tp-cs">notes only</span></div>
+          <div class="block break"><span class="time">16:30+</span>Done. Rest. Walking Dead 🧟 Sleep 22:00.</div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Sun</span><span class="day-date">31 May</span></div>
+        <div class="day-body">
+          <div class="block maths tickable"><span class="time">09:00–10:00</span>Maths: Formula sheet read + skim mark scheme language<span class="topic-pill tp-maths">calm, no Qs</span></div>
+          <div class="block bio tickable"><span class="time">10:00–11:00</span>Bio: Anki — 20 mins hard cards, then P1 topic skim<span class="topic-pill tp-bio">light</span></div>
+          <div class="block cs tickable"><span class="time">11:00–12:00</span>CS: P1 definitions read — key terms + 2-mark Q answers<span class="topic-pill tp-cs">notes only</span></div>
+          <div class="block break"><span class="time">12:00+</span>REST all afternoon. Walk. Eat well. Film. Sleep 22:00.</div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Mon</span><span class="day-date">1 Jun</span></div>
+        <div class="day-body">
+          <div class="block maths tickable"><span class="time">09:30–10:30</span>Maths: Formula sheet only — read through once, calmly<span class="topic-pill tp-maths">no Qs at all</span></div>
+          <div class="block bio tickable"><span class="time">10:30–11:00</span>Bio: Anki — 15 mins only, don't push it<span class="topic-pill tp-bio">light</span></div>
+          <div class="block break"><span class="time">11:00+</span>REST. Eat well. Walk. Watch TV. Get off the desk. Sleep 22:00.</div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Tue</span><span class="day-date">2 Jun</span></div>
+        <div class="day-body">
+          <div class="block maths tickable"><span class="time">09:30–10:00</span>Maths: Formula sheet — 30 mins ONLY. Calm read. Done.<span class="topic-pill tp-maths">final prep</span></div>
+          <div class="block break"><span class="time">10:00+</span>No more revision today. Eat well. Walk. Watch TV. You are ready.</div>
+          <div class="block break"><span class="time">22:00</span>SLEEP 💤 — Maths P1 tomorrow afternoon. You've got this.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 5: EXAM PERIOD -->
+<div class="phase-section" id="phase-phase5">
+  <div class="phase-header">
+    <div class="phase-tag exam-tag">PHASE 5</div>
+    <div class="phase-title">Exam Period — Deliver</div>
+    <div class="phase-subtitle">3 Jun – 18 Jun</div>
+  </div>
+  <div class="phase-note">
+    <strong>After each exam: close the door, look forward only.</strong> Between exams you still have full days — use them properly. On non-exam days aim for <strong>4–6 hrs</strong> of focused revision on whichever exam is next. On exam days: morning is light prep only (1 hr max), afternoon is the paper, evening is a short preview of the next thing. Keep Anki at 15 mins/day. Sleep 8+ hours every night — this is non-negotiable now.
+  </div>
+
+  <!-- EXAM WEEK 1 -->
+  <div class="week">
+    <div class="week-label">Exam Week 1 · 3–8 June</div>
+    <div class="days-grid seven">
+
+      <div class="day-card exam-day">
+        <div class="day-header"><span class="day-name" style="color:var(--exam)">Wed</span><span class="day-date">3 Jun</span></div>
+        <div class="day-body">
+          <div class="block exam-block">📐 MATHS P1 — Pure Maths 1 · PM · 2h</div>
+          <div class="block maths tickable"><span class="time">09:00–10:00</span>Maths: Formula sheet read — one calm pass only<span class="topic-pill tp-maths">no Qs, no panic</span></div>
+          <div class="block break"><span class="time">10:00–13:00</span>Rest before exam. Eat lunch. Walk.</div>
+          <div class="block bio tickable"><span class="time">19:00–20:30</span>Bio: P1 topic skim — Biological molecules + Cells<span class="topic-pill tp-bio">exam tomorrow PM</span></div>
+        </div>
+      </div>
+
+      <div class="day-card exam-day">
+        <div class="day-header"><span class="day-name" style="color:var(--exam)">Thu</span><span class="day-date">4 Jun</span></div>
+        <div class="day-body">
+          <div class="block exam-block">🧬 BIO P1 — Biological Processes · PM · 2h</div>
+          <div class="block bio tickable"><span class="time">09:00–10:30</span>Bio: P1 topic skim — Exchange substances + Genetic info<span class="topic-pill tp-bio">notes only, calm</span></div>
+          <div class="block break"><span class="time">10:30–13:00</span>Rest before exam. Eat. Walk.</div>
+          <div class="block maths tickable"><span class="time">19:00–20:30</span>Maths P2: Key Pure 2 topics skim — sequences, further trig, integration<span class="topic-pill tp-maths">P2 is Thu 11 Jun</span></div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Fri</span><span class="day-date">5 Jun</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">08:00–08:15</span>Anki — Bio P2 topics hard cards<span class="topic-pill tp-bio">daily</span></div>
+          <div class="block bio tickable"><span class="time">09:00–11:00</span>Bio: Full past paper P2 (timed, exam conditions)<span class="topic-pill tp-bio">Biological diversity</span></div>
+          <div class="block bio tickable"><span class="time">11:00–12:30</span>Bio: Mark P2 + error correction — note every gap<span class="topic-pill tp-bio">targeted fix</span></div>
+          <div class="block break"><span class="time">12:30–14:00</span>Lunch + break</div>
+          <div class="block maths tickable"><span class="time">14:00–16:00</span>Maths: Full past paper P2 (timed, exam conditions)<span class="topic-pill tp-maths">Pure 2</span></div>
+          <div class="block maths tickable"><span class="time">16:00–17:30</span>Maths: Mark P2 + error correction<span class="topic-pill tp-maths">update error log</span></div>
+          <div class="block break"><span class="time">17:30–19:00</span>Dinner + break</div>
+          <div class="block cs tickable"><span class="time">19:00–20:30</span>CS: P1 topic skim — architecture, OS, networking<span class="topic-pill tp-cs">CS P1 is Wed 10 Jun</span></div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Sat</span><span class="day-date">6 Jun</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">08:00–08:15</span>Anki — Bio P2 + CS definitions<span class="topic-pill tp-bio">daily</span></div>
+          <div class="block bio tickable"><span class="time">09:00–11:00</span>Bio: Full past paper P2 (different year, timed) + mark<span class="topic-pill tp-bio">rotate years</span></div>
+          <div class="block bio tickable"><span class="time">11:00–12:00</span>Bio: Error correction + re-read P2 weak topics<span class="topic-pill tp-bio">targeted</span></div>
+          <div class="block break"><span class="time">12:00–13:30</span>Lunch + break</div>
+          <div class="block cs tickable"><span class="time">13:30–16:00</span>CS: Full past paper P1 (timed, exam conditions) + mark<span class="topic-pill tp-cs">P1 is Wed 10</span></div>
+          <div class="block cs tickable"><span class="time">16:00–17:30</span>CS: P1 error correction + definitions weak spots<span class="topic-pill tp-cs">targeted</span></div>
+          <div class="block break"><span class="time">17:30–19:00</span>Dinner + break</div>
+          <div class="block maths tickable"><span class="time">19:00–20:30</span>Maths: P2 error correction + hardest Q types<span class="topic-pill tp-maths">redo wrong Qs</span></div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Sun</span><span class="day-date">7 Jun</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">08:00–08:15</span>Anki — daily<span class="topic-pill tp-bio">all subjects</span></div>
+          <div class="block bio tickable"><span class="time">09:00–10:30</span>Bio: P2 Anki + skim mark scheme language from P2 papers<span class="topic-pill tp-bio">how examiners word answers</span></div>
+          <div class="block cs tickable"><span class="time">10:30–12:30</span>CS: Full past paper P1 (another year, timed) + mark<span class="topic-pill tp-cs">P1 in 3 days</span></div>
+          <div class="block break"><span class="time">12:30–14:00</span>Lunch + break</div>
+          <div class="block cs tickable"><span class="time">14:00–15:30</span>CS: P1 error correction + definitions blitz<span class="topic-pill tp-cs">2-mark Qs from memory</span></div>
+          <div class="block maths tickable"><span class="time">15:30–17:00</span>Maths: P2 topic skim — hardest Pure 2 topics<span class="topic-pill tp-maths">further calculus, series</span></div>
+          <div class="block break"><span class="time">17:00+</span>Rest. Sleep by 22:00.</div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Mon</span><span class="day-date">8 Jun</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">08:00–08:15</span>Anki — daily<span class="topic-pill tp-bio">all subjects</span></div>
+          <div class="block cs tickable"><span class="time">09:00–11:00</span>CS: Final full past paper P1 (timed) + mark<span class="topic-pill tp-cs">last full paper before exam</span></div>
+          <div class="block cs tickable"><span class="time">11:00–12:00</span>CS: P1 final error correction + definitions read<span class="topic-pill tp-cs">no new content</span></div>
+          <div class="block break"><span class="time">12:00–14:00</span>Lunch + break</div>
+          <div class="block cs tickable"><span class="time">14:00–15:00</span>CS: P1 notes skim — one pass through all topics calmly<span class="topic-pill tp-cs">consolidation</span></div>
+          <div class="block bio tickable"><span class="time">15:00–16:00</span>Bio: P2 topic skim — final calm read<span class="topic-pill tp-bio">P2 is Fri 12</span></div>
+          <div class="block break"><span class="time">16:00+</span>REST. CS P1 is tomorrow. Early night 22:00.</div>
+        </div>
+      </div>
+
+      <div class="day-card exam-day">
+        <div class="day-header"><span class="day-name" style="color:var(--exam)">Tue</span><span class="day-date">9 Jun</span></div>
+        <div class="day-body">
+          <div class="block cs tickable"><span class="time">09:30–10:30</span>CS: P1 notes — one final calm read. Definitions only.<span class="topic-pill tp-cs">no Qs</span></div>
+          <div class="block break"><span class="time">10:30–13:00</span>Rest before exam. Eat. Walk.</div>
+          <div class="block break"><span class="time">Afternoon</span>No exam today — CS P1 is tomorrow Wed 10. Prepare mentally.</div>
+          <div class="block maths tickable"><span class="time">19:00–20:00</span>Maths: P2 formula sheet read<span class="topic-pill tp-maths">P2 is Thu 11</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EXAM WEEK 2 -->
+  <div class="week">
+    <div class="week-label">Exam Week 2 · 10–14 June</div>
+    <div class="days-grid five">
+
+      <div class="day-card exam-day">
+        <div class="day-header"><span class="day-name" style="color:var(--exam)">Wed</span><span class="day-date">10 Jun</span></div>
+        <div class="day-body">
+          <div class="block exam-block">💻 CS P1 — Computer Systems · PM · 2h 30m</div>
+          <div class="block cs tickable"><span class="time">09:30–10:30</span>CS: P1 definitions — final read only. No Qs.<span class="topic-pill tp-cs">calm</span></div>
+          <div class="block break"><span class="time">10:30–13:00</span>Rest before exam. Eat. Walk.</div>
+          <div class="block maths tickable"><span class="time">19:00–20:30</span>Maths: P2 past paper Qs — hardest Pure 2 Q types<span class="topic-pill tp-maths">P2 is tomorrow</span></div>
+        </div>
+      </div>
+
+      <div class="day-card exam-day">
+        <div class="day-header"><span class="day-name" style="color:var(--exam)">Thu</span><span class="day-date">11 Jun</span></div>
+        <div class="day-body">
+          <div class="block exam-block">📐 MATHS P2 — Pure Maths 2 · PM · 2h</div>
+          <div class="block maths tickable"><span class="time">09:30–10:30</span>Maths: P2 formula sheet + key methods skim<span class="topic-pill tp-maths">calm, no full Qs</span></div>
+          <div class="block break"><span class="time">10:30–13:00</span>Rest before exam. Eat. Walk.</div>
+          <div class="block bio tickable"><span class="time">19:00–20:30</span>Bio: P2 Anki hard cards + topic summary skim<span class="topic-pill tp-bio">P2 is tomorrow AM</span></div>
+        </div>
+      </div>
+
+      <div class="day-card exam-day">
+        <div class="day-header"><span class="day-name" style="color:var(--exam)">Fri</span><span class="day-date">12 Jun</span></div>
+        <div class="day-body">
+          <div class="block exam-block">🧬 BIO P2 — Biological Diversity · AM · 2h</div>
+          <div class="block bio tickable"><span class="time">Morn (before exam)</span>Bio: P2 Anki — 15 mins only, hard cards<span class="topic-pill tp-bio">calm</span></div>
+          <div class="block bio tickable"><span class="time">14:00–15:30</span>Bio: P3 topics skim — any topic, practical skills<span class="topic-pill tp-bio">P3 is Tue 16</span></div>
+          <div class="block cs tickable"><span class="time">15:30–17:00</span>CS: P2 past paper Qs — algorithms section<span class="topic-pill tp-cs">P2 is Wed 17</span></div>
+          <div class="block break"><span class="time">17:00–19:00</span>Dinner + break</div>
+          <div class="block cs tickable"><span class="time">19:00–20:30</span>CS: Write 3 algorithms from memory — Dijkstra, merge sort, BFS<span class="topic-pill tp-cs">no notes</span></div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Sat</span><span class="day-date">13 Jun</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">08:00–08:15</span>Anki — Bio P3 hard cards<span class="topic-pill tp-bio">daily</span></div>
+          <div class="block bio tickable"><span class="time">09:00–11:00</span>Bio: Full past paper P3 (timed, exam conditions) + mark<span class="topic-pill tp-bio">practical + essay</span></div>
+          <div class="block bio tickable"><span class="time">11:00–12:30</span>Bio: P3 error correction + rewrite essay answers vs mark scheme<span class="topic-pill tp-bio">targeted</span></div>
+          <div class="block break"><span class="time">12:30–14:00</span>Lunch + break</div>
+          <div class="block cs tickable"><span class="time">14:00–16:30</span>CS: Full past paper P2 (timed, exam conditions) + mark<span class="topic-pill tp-cs">algorithms + programming</span></div>
+          <div class="block cs tickable"><span class="time">16:30–17:30</span>CS: P2 error correction + OOP concepts review<span class="topic-pill tp-cs">targeted</span></div>
+          <div class="block break"><span class="time">17:30–19:00</span>Dinner + break</div>
+          <div class="block maths tickable"><span class="time">19:00–20:30</span>Maths: P3 stats + mechanics topic skim<span class="topic-pill tp-maths">P3 is Thu 18</span></div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Sun</span><span class="day-date">14 Jun</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">08:00–08:15</span>Anki — daily<span class="topic-pill tp-bio">all subjects</span></div>
+          <div class="block bio tickable"><span class="time">09:00–11:00</span>Bio: Full past paper P3 (another year, timed) + mark<span class="topic-pill tp-bio">P3 in 2 days</span></div>
+          <div class="block bio tickable"><span class="time">11:00–12:00</span>Bio: P3 error correction + required practicals weak spots<span class="topic-pill tp-bio">targeted</span></div>
+          <div class="block break"><span class="time">12:00–13:30</span>Lunch + break</div>
+          <div class="block cs tickable"><span class="time">13:30–16:00</span>CS: Full past paper P2 (another year, timed) + mark<span class="topic-pill tp-cs">P2 is Wed 17</span></div>
+          <div class="block cs tickable"><span class="time">16:00–17:00</span>CS: P2 error correction<span class="topic-pill tp-cs">targeted</span></div>
+          <div class="block break"><span class="time">17:00–19:00</span>Dinner + break</div>
+          <div class="block maths tickable"><span class="time">19:00–20:30</span>Maths: Full past paper P3 (timed) + mark<span class="topic-pill tp-maths">Stats + Mech</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EXAM WEEK 3 -->
+  <div class="week">
+    <div class="week-label">Exam Week 3 · 15–18 June — Finish Line</div>
+    <div class="days-grid four">
+
+      <div class="day-card">
+        <div class="day-header"><span class="day-name">Mon</span><span class="day-date">15 Jun</span></div>
+        <div class="day-body">
+          <div class="block bio tickable"><span class="time">08:00–08:15</span>Anki — Bio P3 hard cards<span class="topic-pill tp-bio">daily</span></div>
+          <div class="block bio tickable"><span class="time">09:00–11:00</span>Bio: P3 full topic skim — all topics, practical skills, essay technique<span class="topic-pill tp-bio">P3 is tomorrow AM</span></div>
+          <div class="block bio tickable"><span class="time">11:00–12:30</span>Bio: Write 2 essay answers from memory (9-mark Qs) — mark vs scheme<span class="topic-pill tp-bio">practise under pressure</span></div>
+          <div class="block break"><span class="time">12:30–14:00</span>Lunch + break</div>
+          <div class="block cs tickable"><span class="time">14:00–15:30</span>CS: P2 final topic skim — algorithms, OOP, data structures<span class="topic-pill tp-cs">P2 is Wed 17</span></div>
+          <div class="block maths tickable"><span class="time">15:30–16:30</span>Maths: P3 formula sheet read<span class="topic-pill tp-maths">P3 is Thu 18</span></div>
+          <div class="block break"><span class="time">16:30+</span>REST. Bio P3 is tomorrow. Sleep 22:00.</div>
+        </div>
+      </div>
+
+      <div class="day-card exam-day">
+        <div class="day-header"><span class="day-name" style="color:var(--exam)">Tue</span><span class="day-date">16 Jun</span></div>
+        <div class="day-body">
+          <div class="block exam-block">🧬 BIO P3 — Mixed + Practical · AM · 2h</div>
+          <div class="block bio tickable"><span class="time">Before exam</span>Bio: Anki 15 mins only. Required practicals skim. Calm.</div>
+          <div class="block cs tickable"><span class="time">14:00–16:00</span>CS: Full past paper P2 (final timed run) + mark<span class="topic-pill tp-cs">P2 is tomorrow AM</span></div>
+          <div class="block cs tickable"><span class="time">16:00–17:00</span>CS: P2 error correction + write 3 algorithms from memory<span class="topic-pill tp-cs">no notes</span></div>
+          <div class="block break"><span class="time">17:00–19:00</span>Dinner + break</div>
+          <div class="block maths tickable"><span class="time">19:00–20:00</span>Maths: P3 Stats + Mech key formulas + method skim<span class="topic-pill tp-maths">P3 is Thu 18</span></div>
+        </div>
+      </div>
+
+      <div class="day-card exam-day">
+        <div class="day-header"><span class="day-name" style="color:var(--exam)">Wed</span><span class="day-date">17 Jun</span></div>
+        <div class="day-body">
+          <div class="block exam-block">💻 CS P2 — Algorithms &amp; Programming · AM · 2h 30m</div>
+          <div class="block cs tickable"><span class="time">Before exam</span>CS: P2 algorithms — read through once. Calm.</div>
+          <div class="block maths tickable"><span class="time">14:00–15:30</span>Maths: Full past paper P3 (timed) + mark<span class="topic-pill tp-maths">last full paper before exam</span></div>
+          <div class="block maths tickable"><span class="time">15:30–16:30</span>Maths: P3 error correction — redo wrong Qs<span class="topic-pill tp-maths">targeted</span></div>
+          <div class="block break"><span class="time">16:30–19:00</span>Dinner + break</div>
+          <div class="block maths tickable"><span class="time">19:00–20:00</span>Maths: Formula sheet read + Stats key methods skim<span class="topic-pill tp-maths">P3 tomorrow PM</span></div>
+        </div>
+      </div>
+
+      <div class="day-card exam-day">
+        <div class="day-header"><span class="day-name" style="color:var(--exam)">Thu</span><span class="day-date">18 Jun 🏁</span></div>
+        <div class="day-body">
+          <div class="block exam-block">📐 MATHS P3 — Stats &amp; Mechanics · PM · 2h</div>
+          <div class="block maths tickable"><span class="time">09:30–10:30</span>Maths: Formula sheet — final calm read. No Qs. You're ready.</div>
+          <div class="block break"><span class="time">10:30+</span>REST. Eat. Walk. You've done everything you could.</div>
+          <div class="block break"><span class="time">After exam</span>🎉 YOU ARE DONE. Go celebrate. You earned every bit of it.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+  function showPhase(id, btn) {
+    document.querySelectorAll('.phase-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.phase-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('phase-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // Countdown
+  function updateCountdown() {
+    const now = new Date();
+    now.setHours(0,0,0,0);
+    const mathsP1 = new Date('2026-06-03');
+    const bioP1 = new Date('2026-06-04');
+    const csP1 = new Date('2026-06-10');
+    const diff = (d) => Math.max(0, Math.ceil((d - now) / 86400000));
+    document.getElementById('cd-maths').textContent = diff(mathsP1);
+    document.getElementById('cd-bio').textContent = diff(bioP1);
+    document.getElementById('cd-cs').textContent = diff(csP1);
+  }
+  updateCountdown();
+
+  // TICK OFF system — persists via localStorage
+  const STORAGE_KEY = 'revision_ticks_v1';
+  let ticks = {};
+  try { ticks = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) {}
+
+  function saveAndRender() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(ticks)); } catch(e) {}
+    renderTicks();
+    updateProgress();
+  }
+
+  function renderTicks() {
+    document.querySelectorAll('.block.tickable').forEach((el, i) => {
+      const id = el.dataset.id;
+      if (ticks[id]) el.classList.add('done');
+      else el.classList.remove('done');
+    });
+  }
+
+  // Parse duration in minutes from a time string like "09:10–10:55", "17:00–18:30", "10:00–12:00"
+  function parseMins(timeStr) {
+    if (!timeStr) return 0;
+    // Match HH:MM–HH:MM or HH:MM-HH:MM
+    const m = timeStr.match(/(\d{1,2}):(\d{2})\s*[–\-]\s*(\d{1,2}):(\d{2})/);
+    if (!m) return 0;
+    const start = parseInt(m[1]) * 60 + parseInt(m[2]);
+    const end   = parseInt(m[3]) * 60 + parseInt(m[4]);
+    return Math.max(0, end - start);
+  }
+
+  function fmtTime(mins) {
+    if (mins <= 0) return '0h 0m';
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    return h > 0 ? `${h}h ${m}m` : `${m}m`;
+  }
+
+  // Detect subject from block classes
+  function blockSubject(el) {
+    if (el.classList.contains('bio')) return 'bio';
+    if (el.classList.contains('maths')) return 'maths';
+    if (el.classList.contains('cs')) return 'cs';
+    // lunch-rev and free-period and study-hall: check topic pill or content
+    const text = el.textContent.toLowerCase();
+    const pill = el.querySelector('.tp-bio, .tp-maths, .tp-cs');
+    if (pill) {
+      if (pill.classList.contains('tp-bio')) return 'bio';
+      if (pill.classList.contains('tp-maths')) return 'maths';
+      if (pill.classList.contains('tp-cs')) return 'cs';
+    }
+    // fallback: scan text for subject keywords
+    const bioWords = ['bio','biology','anki','topic','respir','photosyn','genetics','ecosystem','cell','practis','practical','organell'];
+    const mathWords = ['maths','math','calcul','integr','differentiat','trigon','statistic','mechanic','pure','proof','vector','binomial','sequen','logarit','exponential'];
+    const csWords = ['cs','computer','algorithm','sort','search','oop','network','operatin','cpu','database','encrypt','data struct','pseudo','function','turing','fsm'];
+    let bioScore = 0, mathScore = 0, csScore = 0;
+    bioWords.forEach(w => { if (text.includes(w)) bioScore++; });
+    mathWords.forEach(w => { if (text.includes(w)) mathScore++; });
+    csWords.forEach(w => { if (text.includes(w)) csScore++; });
+    if (mathScore > bioScore && mathScore > csScore) return 'maths';
+    if (csScore > bioScore && csScore > mathScore) return 'cs';
+    if (bioScore > 0) return 'bio';
+    return 'other';
+  }
+
+  function updateProgress() {
+    const all = document.querySelectorAll('.block.tickable');
+    const doneSel = document.querySelectorAll('.block.tickable.done');
+    const totalCount = all.length;
+    const doneCount = doneSel.length;
+    const pct = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
+
+    // Time totals
+    let total = {bio:0, maths:0, cs:0, other:0};
+    let done  = {bio:0, maths:0, cs:0, other:0};
+
+    all.forEach(el => {
+      const timeEl = el.querySelector('.time');
+      const mins = timeEl ? parseMins(timeEl.textContent) : 0;
+      const subj = blockSubject(el);
+      total[subj] = (total[subj] || 0) + mins;
+      if (el.classList.contains('done')) {
+        done[subj] = (done[subj] || 0) + mins;
+      }
+    });
+
+    const totalAllMins = total.bio + total.maths + total.cs + total.other;
+    const doneAllMins  = done.bio  + done.maths  + done.cs  + done.other;
+
+    // Overall progress bar
+    document.getElementById('prog-fill').style.width = pct + '%';
+    document.getElementById('prog-label').textContent = `${doneCount} / ${totalCount} sessions ticked (${pct}%)`;
+
+    // Stat cards
+    document.getElementById('stat-total-done').textContent = fmtTime(doneAllMins);
+    document.getElementById('stat-total-left').textContent = `of ${fmtTime(totalAllMins)} total planned`;
+
+    document.getElementById('stat-bio-done').textContent = fmtTime(done.bio);
+    document.getElementById('stat-bio-left').textContent  = `of ${fmtTime(total.bio)} planned`;
+
+    document.getElementById('stat-maths-done').textContent = fmtTime(done.maths);
+    document.getElementById('stat-maths-left').textContent  = `of ${fmtTime(total.maths)} planned`;
+
+    document.getElementById('stat-cs-done').textContent = fmtTime(done.cs);
+    document.getElementById('stat-cs-left').textContent  = `of ${fmtTime(total.cs)} planned`;
+
+    // Per-subject bars
+    const bioPct   = total.bio   > 0 ? Math.round((done.bio   / total.bio)   * 100) : 0;
+    const mathsPct = total.maths > 0 ? Math.round((done.maths / total.maths) * 100) : 0;
+    const csPct    = total.cs    > 0 ? Math.round((done.cs    / total.cs)    * 100) : 0;
+    document.getElementById('prog-bio').style.width   = bioPct   + '%';
+    document.getElementById('prog-maths').style.width = mathsPct + '%';
+    document.getElementById('prog-cs').style.width    = csPct    + '%';
+    document.getElementById('pct-bio').textContent   = bioPct   + '%';
+    document.getElementById('pct-maths').textContent = mathsPct + '%';
+    document.getElementById('pct-cs').textContent    = csPct    + '%';
+  }
+
+  // Assign IDs and bind clicks
+  document.querySelectorAll('.block.tickable').forEach((el, i) => {
+    const id = 'tick_' + i;
+    el.dataset.id = id;
+    el.addEventListener('click', () => {
+      ticks[id] = !ticks[id];
+      saveAndRender();
+    });
+  });
+
+  renderTicks();
+  updateProgress();
+</script>
+</body>
+</html>
