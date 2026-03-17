@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maciek's A-Level Revision Timetable 2026</title>
@@ -359,12 +358,166 @@
   .subj-bar-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1px; width: 28px; text-align: right; }
   .subj-bar-pct { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); width: 30px; text-align: right; }
 
+  /* HOW TO REVISE SECTION */
+  .how-to-revise {
+    margin-bottom: 32px;
+  }
+  .htr-header {
+    margin-bottom: 24px;
+  }
+  .htr-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .htr-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .htr-sub {
+    color: var(--muted);
+    font-size: 13px;
+    font-family: 'Space Mono', monospace;
+  }
+  .htr-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .htr-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .bio-card { border-top: 3px solid var(--bio); }
+  .maths-card { border-top: 3px solid var(--maths); }
+  .cs-card { border-top: 3px solid var(--cs); }
+  .htr-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .htr-emoji { font-size: 28px; }
+  .htr-subject { font-size: 18px; font-weight: 800; }
+  .htr-target { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 2px; letter-spacing: 1px; }
+  .htr-section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .htr-steps { display: flex; flex-direction: column; gap: 10px; }
+  .htr-step {
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .htr-step strong { color: var(--text); }
+  .htr-num {
+    min-width: 22px;
+    height: 22px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .htr-ms-tips { display: flex; flex-direction: column; gap: 7px; }
+  .htr-tip {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    background: var(--bg);
+    border-radius: 6px;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  .htr-tip-bad { color: #ff6b6b; opacity: 0.8; }
+  .htr-tip-good { color: var(--bio); font-weight: 600; }
+  .maths-card .htr-tip-good { color: var(--maths); }
+  .cs-card .htr-tip-good { color: var(--cs); }
+  .htr-facts { display: flex; flex-direction: column; gap: 6px; }
+  .htr-fact {
+    background: var(--bg);
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+    border-left: 2px solid var(--border);
+  }
+  .bio-card .htr-fact { border-left-color: var(--bio); }
+  .maths-card .htr-fact { border-left-color: var(--maths); }
+  .cs-card .htr-fact { border-left-color: var(--cs); }
+
+  /* DAILY ROUTINE */
+  .htr-routine {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 24px;
+  }
+  .htr-routine-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .htr-routine-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 12px;
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+  }
+  .htr-time {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    min-width: 80px;
+    padding-top: 1px;
+    font-weight: 700;
+  }
+  .htr-routine-text { color: var(--muted); line-height: 1.5; }
+
   @media (max-width: 900px) {
     header, .phase-nav, main { padding-left: 16px; padding-right: 16px; }
     .days-grid.five, .days-grid.seven { grid-template-columns: 1fr; }
     .days-grid.four, .days-grid.three, .days-grid.two { grid-template-columns: 1fr 1fr; }
     .day-card { min-height: auto; }
     .stats-row { grid-template-columns: 1fr 1fr; }
+    .htr-grid { grid-template-columns: 1fr; }
+    .htr-routine-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -481,53 +634,144 @@
     <strong>Your exam window: 3 June – 18 June.</strong> You have school lessons until ~22 May, then study leave. Biology is your biggest priority (C→A) — roughly <strong>Bio 40% / Maths 35% / CS 25%</strong> of study time. Free periods and lunch (13:00–14:05) at school are now fully mapped — that's an extra 1–2 hrs of revision on most school days without touching your evening. Click any revision block to tick it off ✓
   </div>
 
-  <div class="strategy-grid">
-    <div class="strategy-card">
-      <h3 style="color:var(--bio)">🧬 Biology Strategy (C → A)</h3>
-      <ul>
-        <li>Topics 1–4 during school weeks (Mar–Easter), Topics 5–8 over Easter</li>
-        <li>After each topic: Anki flashcards for every definition + process</li>
-        <li>Topic-by-topic Qs on Save My Exams — not full papers yet</li>
-        <li>Paper 1: Biological molecules, Cells, Exchange, Genetic info</li>
-        <li>Paper 2: Energy transfers, Responding, Genetics, Ecosystems</li>
-        <li>Paper 3: Any topic + all 12 required practicals — drill weekly</li>
-        <li>Full past papers from mid-April onwards</li>
-      </ul>
+  <!-- HOW TO REVISE SECTION -->
+  <div class="how-to-revise">
+    <div class="htr-header">
+      <span class="htr-tag">HOW TO REVISE</span>
+      <h2 class="htr-title">The Method, Not Just The Topics</h2>
+      <p class="htr-sub">Reading notes does almost nothing. Here's what actually works for each subject.</p>
     </div>
-    <div class="strategy-card">
-      <h3 style="color:var(--maths)">📐 Maths Strategy (B → A*)</h3>
-      <ul>
-        <li>Topic questions ONLY — no past papers until all topics covered</li>
-        <li>Save My Exams topic banks — do every question in each topic</li>
-        <li>Weakest topics first, ask teacher which to prioritise</li>
-        <li>Pure 1 + 2 first, then Stats, then Mechanics</li>
-        <li>Once teacher approves → timed past papers to build exam technique</li>
-        <li>A* differentiation: proof, hardest integration, parametric</li>
-      </ul>
+
+    <div class="htr-grid">
+
+      <!-- BIO -->
+      <div class="htr-card bio-card">
+        <div class="htr-card-header">
+          <span class="htr-emoji">🧬</span>
+          <div>
+            <div class="htr-subject" style="color:var(--bio)">Biology</div>
+            <div class="htr-target">AQA · C → A</div>
+          </div>
+        </div>
+        <div class="htr-section-label">THE SESSION METHOD</div>
+        <div class="htr-steps">
+          <div class="htr-step"><span class="htr-num">1</span><div><strong>Read one subtopic on Save My Exams</strong> — don't highlight, don't copy. Just read it properly once and try to understand what's happening.</div></div>
+          <div class="htr-step"><span class="htr-num">2</span><div><strong>Close the notes. Write everything you remember</strong> on a blank piece of paper. Don't look until you're done. What you couldn't write = your gaps.</div></div>
+          <div class="htr-step"><span class="htr-num">3</span><div><strong>Check against SME. For every gap: make an Anki card</strong> — but use the exact mark scheme wording, not your own words. The difference between a B and an A in Bio is usually just vocabulary.</div></div>
+          <div class="htr-step"><span class="htr-num">4</span><div><strong>Do Save My Exams topic questions.</strong> For every wrong answer — even ones you were close on — copy the mark scheme answer word-for-word into an error log.</div></div>
+          <div class="htr-step"><span class="htr-num">5</span><div><strong>For 6-mark and 9-mark questions:</strong> write your answer, then literally tick off each mark scheme point you hit. You'll quickly learn what examiners always want.</div></div>
+        </div>
+        <div class="htr-section-label">MARK SCHEME RULES</div>
+        <div class="htr-ms-tips">
+          <div class="htr-tip"><span class="htr-tip-bad">✗ "breaks down proteins"</span><span class="htr-tip-good">✓ "hydrolysis of peptide bonds"</span></div>
+          <div class="htr-tip"><span class="htr-tip-bad">✗ "separates the strands"</span><span class="htr-tip-good">✓ "helicase breaks hydrogen bonds between complementary bases"</span></div>
+          <div class="htr-tip"><span class="htr-tip-bad">✗ "substrate binds"</span><span class="htr-tip-good">✓ "enzyme-substrate complex is formed"</span></div>
+          <div class="htr-tip"><span class="htr-tip-bad">✗ "speeds up reactions"</span><span class="htr-tip-good">✓ "biological catalyst that increases the rate of metabolic reactions without being used up"</span></div>
+          <div class="htr-tip"><span class="htr-tip-bad">✗ "uses hydrogen"</span><span class="htr-tip-good">✓ "reduced NADP/NADPH is used to reduce GP to G3P"</span></div>
+        </div>
+        <div class="htr-section-label">KEY FACTS</div>
+        <div class="htr-facts">
+          <div class="htr-fact">Paper 1 covers Topics 1–4: Biological molecules, Cells, Exchange substances, Genetic information</div>
+          <div class="htr-fact">Paper 2 covers Topics 5–8: Energy transfers, Organisms respond, Genetics, Ecosystems</div>
+          <div class="htr-fact">Paper 3 can pull from ANY topic + all 12 required practicals + data analysis</div>
+          <div class="htr-fact">Required practicals: for each one know — what you measure, IV, DV, one control + why, one error + how to reduce it</div>
+        </div>
+      </div>
+
+      <!-- MATHS -->
+      <div class="htr-card maths-card">
+        <div class="htr-card-header">
+          <span class="htr-emoji">📐</span>
+          <div>
+            <div class="htr-subject" style="color:var(--maths)">Maths</div>
+            <div class="htr-target">Edexcel · B → A*</div>
+          </div>
+        </div>
+        <div class="htr-section-label">THE SESSION METHOD</div>
+        <div class="htr-steps">
+          <div class="htr-step"><span class="htr-num">1</span><div><strong>Topic questions ONLY until your teacher confirms all topics are done</strong> — no past papers yet. Doing past papers before you've learned everything wastes time and builds bad habits.</div></div>
+          <div class="htr-step"><span class="htr-num">2</span><div><strong>Do every Save My Exams question in a topic bank.</strong> Don't skip. Do them in order. The difficulty ramps up and the later ones are the A/A* questions.</div></div>
+          <div class="htr-step"><span class="htr-num">3</span><div><strong>For every wrong answer: write the full correct method</strong> from the mark scheme — every single algebraic step. Don't just read it. Writing it cements it.</div></div>
+          <div class="htr-step"><span class="htr-num">4</span><div><strong>Build an error log by topic.</strong> Come back to your top wrong question types 2 days later and redo them from scratch. If you can't do them — they stay in the log.</div></div>
+          <div class="htr-step"><span class="htr-num">5</span><div><strong>Once all topics are done → timed past papers under exam conditions.</strong> Mark immediately. Error log every wrong answer. Redo those exact question types the next day.</div></div>
+        </div>
+        <div class="htr-section-label">MARK SCHEME RULES</div>
+        <div class="htr-ms-tips">
+          <div class="htr-tip"><span class="htr-tip-bad">✗ Skipping algebraic steps</span><span class="htr-tip-good">✓ Show every line — method marks exist even if your final answer is wrong</span></div>
+          <div class="htr-tip"><span class="htr-tip-bad">✗ Forgetting +c on indefinite integrals</span><span class="htr-tip-good">✓ Always write +c — it loses a mark every single time it's missing</span></div>
+          <div class="htr-tip"><span class="htr-tip-bad">✗ Not stating positive direction in mechanics</span><span class="htr-tip-good">✓ "Taking upward as positive" — state it first, stick to it throughout</span></div>
+          <div class="htr-tip"><span class="htr-tip-bad">✗ Classifying stationary points without d²y/dx²</span><span class="htr-tip-good">✓ "d²y/dx² &gt; 0 therefore minimum" — the classification is a separate mark</span></div>
+          <div class="htr-tip"><span class="htr-tip-bad">✗ Hypothesis test with no context in conclusion</span><span class="htr-tip-good">✓ "Insufficient evidence at 5% to conclude the mean weight has increased"</span></div>
+        </div>
+        <div class="htr-section-label">TOPIC ORDER</div>
+        <div class="htr-facts">
+          <div class="htr-fact">Pure 1 first: Algebra, Coordinate Geometry, Binomial, Trigonometry, Exponentials/Logs, Differentiation, Integration</div>
+          <div class="htr-fact">Pure 2 next: Proof, Further Algebra, Functions, Sequences/Series, Further Trig, Parametric, Differential Equations, Numerical Methods</div>
+          <div class="htr-fact">Stats: Probability, Distributions (Binomial + Normal), Hypothesis Testing, PMCC, Regression</div>
+          <div class="htr-fact">Mechanics: Kinematics/SUVAT, Forces/Newton's Laws, Friction, Moments, Projectiles</div>
+        </div>
+      </div>
+
+      <!-- CS -->
+      <div class="htr-card cs-card">
+        <div class="htr-card-header">
+          <span class="htr-emoji">💻</span>
+          <div>
+            <div class="htr-subject" style="color:var(--cs)">Computer Science</div>
+            <div class="htr-target">OCR · B → A</div>
+          </div>
+        </div>
+        <div class="htr-section-label">PAPER 1 METHOD (Computer Systems)</div>
+        <div class="htr-steps">
+          <div class="htr-step"><span class="htr-num">1</span><div><strong>Read one topic on SME. Close it. Write every key point from memory.</strong> Same retrieval approach as Bio. CS Paper 1 is almost entirely memory — what you can't write, you don't know.</div></div>
+          <div class="htr-step"><span class="htr-num">2</span><div><strong>Make Anki cards using exact mark scheme wording.</strong> CS mark schemes are extremely specific — "DNS translates domain names into IP addresses" not "DNS finds the address." Download actual OCR mark schemes from the OCR website and use their exact phrasing.</div></div>
+          <div class="htr-step"><span class="htr-num">3</span><div><strong>Do SME topic questions.</strong> For every 2-mark question you get wrong — copy the MS answer and note what word or phrase was missing. It's usually one specific technical term.</div></div>
+        </div>
+        <div class="htr-section-label">PAPER 2 METHOD (Algorithms &amp; Programming)</div>
+        <div class="htr-steps">
+          <div class="htr-step"><span class="htr-num">1</span><div><strong>You cannot revise Paper 2 by reading.</strong> You must write algorithms by hand on paper — because that is exactly what the exam asks you to do.</div></div>
+          <div class="htr-step"><span class="htr-num">2</span><div><strong>For every algorithm: write the pseudocode from memory, then trace through a small example showing every step.</strong> Do this until it's automatic with no notes.</div></div>
+          <div class="htr-step"><span class="htr-num">3</span><div><strong>Practice OOP by writing classes from scratch</strong> — create a scenario, design the class, write the constructor, methods, and a subclass with inheritance. The exam gives you a scenario and asks you to do exactly this.</div></div>
+        </div>
+        <div class="htr-section-label">MARK SCHEME RULES</div>
+        <div class="htr-ms-tips">
+          <div class="htr-tip"><span class="htr-tip-bad">✗ "finds the address"</span><span class="htr-tip-good">✓ "DNS translates/resolves domain names into IP addresses"</span></div>
+          <div class="htr-tip"><span class="htr-tip-bad">✗ "the OS manages programs"</span><span class="htr-tip-good">✓ "the OS manages CPU allocation by scheduling processes so multiple programs can run concurrently"</span></div>
+          <div class="htr-tip"><span class="htr-tip-bad">✗ "stores data"</span><span class="htr-tip-good">✓ "asymmetric encryption uses a public key to encrypt and a private key to decrypt"</span></div>
+          <div class="htr-tip"><span class="htr-tip-bad">✗ "prevents infinite loops"</span><span class="htr-tip-good">✓ "a base case must be defined to prevent infinite recursion"</span></div>
+          <div class="htr-tip"><span class="htr-tip-bad">✗ "subclass reuses code"</span><span class="htr-tip-good">✓ "subclass inherits all attributes and methods of the superclass without redefining them"</span></div>
+        </div>
+        <div class="htr-section-label">ALGORITHMS TO KNOW COLD</div>
+        <div class="htr-facts">
+          <div class="htr-fact">Bubble sort — compare adjacent pairs, swap if wrong order, repeat n−1 times. O(n²)</div>
+          <div class="htr-fact">Merge sort — divide in half recursively, merge back in order. O(n log n)</div>
+          <div class="htr-fact">Binary search — check middle, discard half, repeat. Must be sorted. O(log n)</div>
+          <div class="htr-fact">BFS — use a queue, visit level by level, mark visited nodes</div>
+          <div class="htr-fact">DFS — use a stack/recursion, go deep then backtrack, mark visited</div>
+          <div class="htr-fact">Dijkstra's — initialise all distances ∞ except start (0), visit smallest unvisited, update neighbours if shorter path found</div>
+        </div>
+      </div>
+
     </div>
-    <div class="strategy-card">
-      <h3 style="color:var(--cs)">💻 CS Strategy (B → A)</h3>
-      <ul>
-        <li>Paper 1: CPU arch, OS, networking, databases, security, ethics, legal</li>
-        <li>Paper 2: Data structures, sorting/searching, OOP, languages, theory</li>
-        <li>Write pseudocode + algorithms by hand in every session — essential</li>
-        <li>Trace through code execution on paper (exam requires this)</li>
-        <li>Past paper Qs from mid-April for Paper 1 + 2 individually</li>
-        <li>Note exact mark-scheme wording — CS marking is very specific</li>
-      </ul>
+
+    <!-- DAILY ROUTINE -->
+    <div class="htr-routine">
+      <div class="htr-section-label" style="margin-bottom:14px">⏰ DAILY ROUTINE</div>
+      <div class="htr-routine-grid">
+        <div class="htr-routine-item"><span class="htr-time">06:30</span><span class="htr-routine-text">Wake up</span></div>
+        <div class="htr-routine-item"><span class="htr-time">07:00</span><span class="htr-routine-text">Leave home — listen to Anki audio or bio podcasts on the commute</span></div>
+        <div class="htr-routine-item"><span class="htr-time">08:00–16:00</span><span class="htr-routine-text">School — free periods (amber) and lunch (purple) are mapped on the timetable, use every one</span></div>
+        <div class="htr-routine-item"><span class="htr-time">16:30–17:00</span><span class="htr-routine-text">Home — decompress, make food if alone (keep it quick)</span></div>
+        <div class="htr-routine-item"><span class="htr-time">17:00–18:30</span><span class="htr-routine-text">Revision Block 1 — hardest subject first while your brain is still sharp</span></div>
+        <div class="htr-routine-item"><span class="htr-time">18:30–19:00</span><span class="htr-routine-text">Break — actual break, not scrolling. Walk, eat, reset</span></div>
+        <div class="htr-routine-item"><span class="htr-time">19:00–20:30</span><span class="htr-routine-text">Revision Block 2 — second subject</span></div>
+        <div class="htr-routine-item"><span class="htr-time">20:30–21:00</span><span class="htr-routine-text">Dinner / chill</span></div>
+        <div class="htr-routine-item"><span class="htr-time">21:00–22:00</span><span class="htr-routine-text">Walking Dead with mum 🧟 — protected, non-negotiable</span></div>
+        <div class="htr-routine-item"><span class="htr-time">22:00–23:00</span><span class="htr-routine-text">Light Anki only — no new content, just review cards. Wind down</span></div>
+        <div class="htr-routine-item"><span class="htr-time">23:00</span><span class="htr-routine-text">Sleep — phone in another room ideally</span></div>
+      </div>
     </div>
-    <div class="strategy-card">
-      <h3>⏰ School Day Template</h3>
-      <ul>
-        <li>06:30 Wake · 07:00 Leave · 08:00 Arrive</li>
-        <li>Free periods → revision (shown in amber on timetable)</li>
-        <li>13:00–14:05 Lunch → light revision (shown in purple)</li>
-        <li>Study Hall (14:15–15:05 Mon/Tue/Thu) → focused work</li>
-        <li>Leave school early on free-period-heavy afternoons</li>
-        <li>17:00–18:30 Block 1 · 19:00–20:30 Block 2 at home</li>
-        <li>21:00–22:00 Walking Dead 🧟 · 23:00 Sleep</li>
-      </ul>
-    </div>
+
   </div>
 </div>
 
